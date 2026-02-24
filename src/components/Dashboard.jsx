@@ -170,7 +170,7 @@ const Dashboard = () => {
                 <ShoppingIcon />
               </div>
               <div className='stat-content'>
-                <h3>Rndez-Vous</h3>
+                <h3>Rendez-Vous</h3>
                 <p className='stat-value'>
                   {analyticsData.stats.totalCommandes}
                 </p>
@@ -242,8 +242,8 @@ const Dashboard = () => {
                   />
                   <Line
                     type='monotone'
-                    dataKey='commandes'
-                    name='Commandes'
+                    dataKey='Rendez-Vous'
+                    name='Rendez-Vous'
                     stroke='#00a416'
                     strokeWidth={2}
                     dot={{ r: 3 }}
