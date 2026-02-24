@@ -1,0 +1,150 @@
+/* Reset et styles de base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(135deg, #e4ecf4 0%, #bbbcbe 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Logo container avec animation flottante */
+.logo-container {
+  margin-bottom: 40px;
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ─── CHANGEMENT ICI : on cible maintenant <img> au lieu de <svg> ─── */
+.main-logo {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  /* On retire le fond noir de l'image WhatsApp avec object-fit */
+  object-fit: contain;
+  /* Ombre colorée qui correspond aux couleurs du logo */
+  filter: drop-shadow(0 15px 30px rgba(245, 160, 32, 0.35));
+  border-radius: 50%; /* Donne un rendu circulaire propre */
+  transition: transform 0.3s ease;
+}
+
+.main-logo:hover {
+  transform: scale(1.03);
+}
+
+/* Barre de chargement */
+.loading-animation {
+  width: 100%;
+  max-width: 350px;
+}
+
+.loading-bar-container {
+  width: 100%;
+  height: 5px;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.loading-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #f5a020 0%, #d81a88 50%, #1c2b52 100%);
+  animation: loading 3.5s ease-in-out forwards;
+  border-radius: 10px;
+}
+
+.loading-text {
+  color: #011529;
+  font-size: 16px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
+  opacity: 0.8;
+  animation: pulse 2s infinite;
+}
+
+/* ── Animations ── */
+@keyframes loading {
+  0% {
+    width: 0;
+  }
+  20% {
+    width: 25%;
+  }
+  40% {
+    width: 45%;
+  }
+  60% {
+    width: 65%;
+  }
+  80% {
+    width: 85%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .main-logo {
+    max-width: 320px;
+  }
+  .loading-text {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-logo {
+    max-width: 260px;
+  }
+  .logo-container {
+    margin-bottom: 30px;
+  }
+  .loading-bar-container {
+    height: 4px;
+  }
+}

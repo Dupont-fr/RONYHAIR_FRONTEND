@@ -1,0 +1,212 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.navbar-container {
+  max-width: 140px;
+  margin: 0 auto;
+  padding: 12px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: #8b5a2b;
+  text-decoration: none;
+}
+
+.navbar-links {
+  display: none;
+  gap: 25px;
+}
+
+.nav-link {
+  /* color: #667eea; */
+  color: #d81a88;
+  text-decoration: none;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  /* color: #764ba2; */
+  color: #d81a88;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #151414;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 3px;
+  background: #232324;
+  border-radius: 2px;
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 85%;
+  max-width: 320px;
+  height: 100vh;
+  background: white;
+  z-index: 200;
+  transition: right 0.3s;
+  overflow-y: auto;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-menu.open {
+  right: 0;
+}
+
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px;
+  border-bottom: 2px solid #f7fafc;
+}
+
+.mobile-menu-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+}
+
+.close-btn {
+  width: 36px;
+  height: 36px;
+  background: #f7fafc;
+  border: none;
+  border-radius: 8px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #4a5568;
+}
+
+.mobile-menu-content {
+  padding: 10px 0;
+}
+
+.menu-item {
+  border-bottom: 1px solid #f7fafc;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  color: #2d3748;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-link:hover {
+  background: #f7fafc;
+}
+
+.arrow {
+  color: #bab4ae;
+  font-size: 12px;
+}
+
+.submenu {
+  background: #f7fafc;
+  padding: 8px 0;
+  animation: slideDown 0.3s;
+}
+
+.submenu-link {
+  display: block;
+  padding: 10px 18px 10px 36px;
+  color: #4a5568;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.submenu-link:hover {
+  background: #e2e8f0;
+  color: #8b5a2b;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 150;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 400px;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-container {
+    padding: 15px 20px;
+  }
+  .navbar-logo {
+    font-size: 24px;
+  }
+  .navbar-links {
+    display: flex;
+  }
+  .hamburger {
+    display: none;
+  }
+}
+
+/* ── Logo container ── */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── CHANGEMENT : logo-svg → logo-img ── */
+.logo-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* cercle propre, coupe les bandes noires */
+  object-fit: cover; /* recadre sur la partie centrale du logo */
+  object-position: center; /* centre l'image dans le cercle */
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #d81a88; /* couleur rose du logo Rony Hair */
+}

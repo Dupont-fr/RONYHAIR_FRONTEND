@@ -1,0 +1,184 @@
+.tombola-banner {
+  width: 100%;
+  padding: 20px 25px;
+  background: linear-gradient(135deg, #dc143c 0%, #b71c1c 100%);
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 6px 16px rgba(220, 20, 60, 0.4);
+  animation: bounceIn 0.6s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tombola-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 255, 255, 0.05) 10px,
+    rgba(255, 255, 255, 0.05) 20px
+  );
+  animation: moveStripes 20s linear infinite;
+}
+
+@keyframes moveStripes {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(50px) translateY(50px);
+  }
+}
+
+.tombola-icon {
+  font-size: 60px;
+  animation: pulse 2s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.tombola-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1;
+}
+
+.tombola-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tombola-logo {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tombola-subtitle {
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+.tombola-prize {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.animated-text {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  animation: glow 1.5s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    text-shadow:
+      0 0 10px #ffd700,
+      0 0 20px #ffd700;
+  }
+  50% {
+    text-shadow:
+      0 0 20px #ffd700,
+      0 0 30px #ffd700;
+  }
+}
+
+.tombola-timer {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.tombola-btn {
+  padding: 14px 28px;
+  background: white;
+  color: #dc143c;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  z-index: 1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tombola-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .tombola-banner {
+    flex-direction: column;
+    padding: 20px 15px;
+    text-align: center;
+  }
+
+  .tombola-icon {
+    font-size: 50px;
+  }
+
+  .tombola-logo {
+    font-size: 24px;
+  }
+
+  .tombola-subtitle {
+    font-size: 14px;
+  }
+
+  .animated-text {
+    font-size: 18px;
+  }
+
+  .tombola-btn {
+    width: 100%;
+    font-size: 16px;
+  }
+}

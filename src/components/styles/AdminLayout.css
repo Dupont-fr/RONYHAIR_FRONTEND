@@ -1,0 +1,514 @@
+/* ============================================
+   ADMIN LAYOUT - BASE
+   ============================================ */
+.admin-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f7fafc;
+}
+
+/* ============================================
+   NAVBAR - TOUJOURS VISIBLE
+   ============================================ */
+.admin-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  z-index: 1000; /* Navbar au-dessus de tout */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+.navbar-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* BOUTON HAMBURGER - SIMPLIFIÉ */
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002; /* Au-dessus de la navbar */
+  position: relative;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: #0f1b3d;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.mobile-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* INFOS UTILISATEUR DESKTOP - VISIBLE PAR DÉFAUT */
+.desktop-user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-name {
+  color: #4a5568;
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+/* DROPDOWN MOBILE - CACHÉ PAR DÉFAUT */
+.mobile-user-dropdown {
+  display: none;
+  position: relative;
+}
+
+.user-dropdown-btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.user-dropdown-btn:hover {
+  background: #f3f4f6;
+}
+
+.admin-name-mobile {
+  margin: 0 8px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 200px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-top: 8px;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.dropdown-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: #4b5563;
+  transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+  background: #f3f4f6;
+}
+
+.logout-item {
+  color: #dc2626;
+}
+
+.btn-logout {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.admin-header {
+  margin-top: 60px; /* Espace pour la navbar fixe */
+  background: linear-gradient(135deg, #02040e 0%, #84234c 100%);
+  color: white;
+  padding: 60px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1; /* Sous la navbar */
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  display: flex;
+  align-items: center;
+}
+
+.header-subtitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.header-user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info-desktop {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-greeting {
+  font-weight: bold;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2px;
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================
+   SIDEBAR ET OVERLAY
+   ============================================ */
+
+/* OVERLAY - pour fermer en cliquant n'importe où */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999; /* Entre la navbar et la sidebar */
+  animation: fadeIn 0.3s ease;
+  display: none; /* Caché par défaut */
+}
+
+.sidebar-overlay.active {
+  display: block; /* Visible quand le menu est ouvert */
+}
+
+/* SIDEBAR */
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100vh;
+  background: white;
+  border-right: 1px solid #e2e8f0;
+  z-index: 1000; /* Au même niveau que la navbar */
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+}
+
+.admin-sidebar.open {
+  transform: translateX(280px);
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #02040e 0%, #84234c 100%);
+  color: white;
+}
+
+.sidebar-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.close-sidebar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-sidebar-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.close-sidebar-btn svg {
+  fill: white;
+}
+
+.sidebar-menu {
+  flex: 1;
+  padding: 20px 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  color: #4a5568;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.menu-item:hover {
+  background: #f7fafc;
+  color: #8b5a2b;
+  border-left-color: #8b5a2b;
+}
+
+.menu-item.active {
+  background: linear-gradient(90deg, rgba(139, 90, 43, 0.1), transparent);
+  color: #8b5a2b;
+  border-left-color: #8b5a2b;
+  font-weight: 600;
+}
+
+.menu-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 15px 20px;
+}
+
+.logout-menu-item {
+  color: #dc2626;
+}
+
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+  color: #a0aec0;
+  font-size: 12px;
+}
+
+.sidebar-footer p {
+  margin: 5px 0;
+}
+
+.version {
+  color: #cbd5e0;
+}
+
+/* ============================================
+   MAIN CONTENT
+   ============================================ */
+.admin-main {
+  flex: 1;
+  padding: 30px;
+  max-width: 100%;
+  margin-top: 60px; /* Espace pour la navbar fixe */
+}
+
+.admin-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   RESPONSIVE - MOBILE FIRST
+   ============================================ */
+
+/* MOBILE (par défaut) */
+.mobile-brand {
+  display: flex;
+}
+
+.desktop-user-info {
+  display: none;
+}
+
+.mobile-user-dropdown {
+  display: block;
+}
+
+.admin-name-mobile {
+  display: none;
+}
+
+.hamburger-btn {
+  display: flex;
+}
+
+/* DESKTOP (768px et plus) */
+@media (min-width: 768px) {
+  /* Cacher les éléments mobile */
+  .mobile-brand {
+    display: none;
+  }
+
+  .mobile-user-dropdown {
+    display: none;
+  }
+
+  /* Afficher les éléments desktop */
+  .desktop-user-info {
+    display: flex;
+  }
+
+  /* Cacher le bouton hamburger sur desktop */
+  .hamburger-btn {
+    display: none;
+  }
+
+  /* Sidebar toujours visible sur desktop  */
+  .admin-sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+    transform: translateX(0);
+    z-index: 900;
+  }
+
+  .sidebar-overlay {
+    display: none !important;
+  }
+
+  .close-sidebar-btn {
+    display: none;
+  }
+
+  /* Ajuster les marges pour la sidebar */
+  .admin-main {
+    margin-left: 280px;
+  }
+
+  .admin-header {
+    margin-left: 280px;
+  }
+
+  /* Ajustement du contenu principal */
+  .admin-content {
+    padding: 0;
+  }
+}
+
+/* PETITS ÉCRANS MOBILE */
+@media (max-width: 480px) {
+  .navbar-content {
+    padding: 0 15px;
+  }
+
+  .header-content {
+    padding: 0 15px;
+  }
+
+  .header-title h1 {
+    font-size: 20px;
+  }
+
+  .brand-text {
+    font-size: 14px;
+  }
+
+  .dropdown-menu {
+    width: 180px;
+  }
+
+  .admin-main {
+    padding: 20px 15px;
+  }
+}
