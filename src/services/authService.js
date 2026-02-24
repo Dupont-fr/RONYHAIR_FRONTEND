@@ -3,7 +3,7 @@ import axios from 'axios'
 // const API_URL = 'http://localhost:3000/api/admin'
 const API_URL =
   process.env.NODE_ENV === 'production'
-    ? 'https://gaetan-bois.onrender.com/api/admin'
+    ? 'https://rony-hair-237.onrender.com/api/admin'
     : 'http://localhost:3000/api/admin'
 
 // ============================================

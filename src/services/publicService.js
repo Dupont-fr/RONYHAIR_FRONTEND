@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const publicBaseUrl =
   process.env.NODE_ENV === 'production'
-    ? 'https://gaetan-bois.onrender.com/api/categories'
+    ? 'https://rony-hair-237.onrender.com/api/categories'
     : '/api/categories'
 
 // ============================================

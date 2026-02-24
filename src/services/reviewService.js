@@ -2,7 +2,7 @@
 
 const API_URL =
   process.env.NODE_ENV === 'production'
-    ? 'https://gaetan-bois.onrender.com/api/reviews'
+    ? 'https://rony-hair-237.onrender.com/api/reviews'
     : '/api/reviews'
 
 // ============================================

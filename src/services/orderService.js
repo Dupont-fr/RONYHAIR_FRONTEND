@@ -5,14 +5,14 @@ import { getToken } from './authService'
 
 const API_URL =
   process.env.NODE_ENV === 'production'
-    ? 'https://gaetan-bois.onrender.com/api/orders'
+    ? 'https://rony-hair-237.onrender.com/api/orders'
     : '/api/orders'
 
 // const adminApiUrl = '/api/admin/orders'
 
 const adminApiUrl =
   process.env.NODE_ENV === 'production'
-    ? 'https://gaetan-bois.onrender.com/api/admin/orders'
+    ? 'https://rony-hair-237.onrender.com/api/admin/orders'
     : '/api/admin/orders'
 
 const getAuthHeaders = () => {

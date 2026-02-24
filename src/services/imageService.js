@@ -4,7 +4,7 @@ import { getToken } from './authService'
 // const baseUrl = '/api/admin/categories'
 const baseUrl =
   process.env.NODE_ENV === 'production'
-    ? 'https://gaetan-bois.onrender.com/api/admin/categories'
+    ? 'https://rony-hair-237.onrender.com/api/admin/categories'
     : '/api/admin/categories'
 
 // Configuration pour inclure le token
