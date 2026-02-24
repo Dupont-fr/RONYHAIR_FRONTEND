@@ -60,59 +60,25 @@ const OrderPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
-
     try {
-      const messageTexte = `*NOUVELLE DEMANDE*
-
-*Produit:* ${product.nom}
-*Prix:* ${product.prix > 0 ? `${product.prix.toLocaleString()} ${product.devise}` : 'Sur demande'}
-
-*Client:*
-${formData.nom} ${formData.prenom}
-Tél: ${formData.telephone}
-Adresse: ${formData.adresse}
-Ville: ${formData.ville}`
+      const messageTexte = `*NOUVELLE COMMANDE*
+        *Produit:* ${product.nom}
+        *Prix:* ${
+          product.prix > 0
+            ? `${product.prix.toLocaleString()} ${product.devise}`
+            : 'Sur demande'
+        }
+        *Client:* ${formData.nom} ${formData.prenom}
+        Tél: ${formData.telephone}
+        Adresse: ${formData.adresse}
+        Ville: ${formData.ville}
+        *Voir l'image:* ${product.url}`
 
       const phoneNumber = '237696409306'
-      // const phoneNumber = '237675896537'
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(messageTexte)}`
+      window.open(whatsappUrl, '_blank')
 
-      // 🔥 Si navigateur supporte le partage de fichiers (mobile moderne)
-      if (navigator.share && navigator.canShare && product.url) {
-        try {
-          const response = await fetch(product.url)
-          const blob = await response.blob()
-
-          const file = new File([blob], 'produit.jpg', {
-            type: blob.type,
-          })
-
-          if (navigator.canShare({ files: [file] })) {
-            await navigator.share({
-              title: product.nom,
-              text: messageTexte,
-              files: [file],
-            })
-          } else {
-            throw new Error('Partage fichier non supporté')
-          }
-        } catch (shareError) {
-          // 🔁 Fallback WhatsApp si partage échoue
-          const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-            messageTexte + `\n\nVoir l'image: ${product.url}`,
-          )}`
-
-          window.open(whatsappUrl, '_blank')
-        }
-      } else {
-        // 🔁 Fallback si Web Share API non disponible
-        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-          messageTexte + `\n\nVoir l'image: ${product.url}`,
-        )}`
-
-        window.open(whatsappUrl, '_blank')
-      }
-
-      // ✅ TRACKER LA COMMANDE (inchangé)
+      // ✅ TRACKER LA COMMANDE
       await analyticsService.trackCommande(
         product._id,
         product.nom,
