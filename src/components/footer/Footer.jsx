@@ -241,7 +241,7 @@ const Footer = () => {
                     style={{
                       marginRight: '8px',
                       verticalAlign: 'middle',
-                      color: 'blue',
+                      color: '#5945d8',
                     }}
                   >
                     <path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path>
