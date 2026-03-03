@@ -8,12 +8,12 @@ const adminBaseUrl =
     ? 'https://rony-hair-237.onrender.com/api/admin/promotions'
     : '/api/admin/promotions'
 
-// const publicBaseUrl = '/api/promotions'
+const publicBaseUrl = '/api/promotions'
 
-const publicBaseUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'https://rony-hair-237.onrender.com/api/promotions'
-    : '/api/promotions'
+// const publicBaseUrl =
+//   process.env.NODE_ENV === 'production'
+//     ? 'https://rony-hair-237.onrender.com/api/promotions'
+//     : '/api/promotions'
 
 const getConfig = () => ({
   headers: {
