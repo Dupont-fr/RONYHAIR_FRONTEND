@@ -3,6 +3,8 @@ import { useParams, useNavigate, Link } from 'react-router'
 import * as categoryService from '../services/categoryService'
 import * as imageService from '../services/imageService'
 import AdminLayout from '../components/AdminLayout'
+import ConfirmModal from './ConfirmModal'
+import ProductFormModal from './ProductFormModal'
 import './styles/ManageImages.css'
 
 const ManageImages = () => {
@@ -17,8 +19,8 @@ const ManageImages = () => {
   const [uploadProgress, setUploadProgress] = useState(0)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
+  const [confirmDelete, setConfirmDelete] = useState(null)
 
-  // États pour les modals
   const [showAddModal, setShowAddModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [currentImage, setCurrentImage] = useState(null)
@@ -26,18 +28,10 @@ const ManageImages = () => {
   const [tempPublicId, setTempPublicId] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Formulaire pour les infos produit
   const [productForm, setProductForm] = useState({
     nom: '',
     prix: '',
-    devise: 'FCFA',
     description: '',
-    enStock: true,
-    quantite: 1,
-    longueur: '',
-    largeur: '',
-    hauteur: '',
-    materiau: '',
   })
 
   useEffect(() => {
@@ -50,10 +44,10 @@ const ManageImages = () => {
     }
   }, [success])
 
-  const loadData = async () => {
+  const loadData = async (showLoading = true) => {
+    const start = showLoading ? Date.now() : 0
+    if (showLoading) setLoading(true)
     try {
-      setLoading(true)
-
       const categoryData = await categoryService.getCategoryById(categoryId)
       setCategory(categoryData.category)
 
@@ -65,7 +59,10 @@ const ManageImages = () => {
       console.error('Erreur chargement:', err)
       setError('Erreur lors du chargement des données')
     } finally {
-      setLoading(false)
+      if (showLoading) {
+        const elapsed = Date.now() - start
+        setTimeout(() => setLoading(false), Math.max(0, 300 - elapsed))
+      }
     }
   }
 
@@ -73,14 +70,7 @@ const ManageImages = () => {
     setProductForm({
       nom: '',
       prix: '',
-      devise: 'FCFA',
       description: '',
-      enStock: true,
-      quantite: 1,
-      longueur: '',
-      largeur: '',
-      hauteur: '',
-      materiau: '',
     })
     setTempImageUrl(null)
     setTempPublicId(null)
@@ -95,13 +85,11 @@ const ManageImages = () => {
     setError(null)
 
     try {
-      // Upload sur Cloudinary
       const { url, publicId } = await imageService.uploadImageToCloudinary(
         file,
         (progress) => setUploadProgress(progress),
       )
 
-      // Stocker temporairement et ouvrir le modal
       setTempImageUrl(url)
       setTempPublicId(publicId)
       setShowAddModal(true)
@@ -130,22 +118,12 @@ const ManageImages = () => {
     setError(null)
 
     try {
-      // Préparer les données
       const imageData = {
         url: tempImageUrl,
         publicId: tempPublicId,
         nom: productForm.nom,
         prix: parseFloat(productForm.prix) || 0,
-        devise: productForm.devise,
         description: productForm.description,
-        enStock: productForm.enStock,
-        quantite: parseInt(productForm.quantite) || 1,
-        dimensions: {
-          longueur: parseFloat(productForm.longueur) || null,
-          largeur: parseFloat(productForm.largeur) || null,
-          hauteur: parseFloat(productForm.hauteur) || null,
-        },
-        materiau: productForm.materiau,
         ordre: images.length,
       }
 
@@ -165,14 +143,7 @@ const ManageImages = () => {
     setProductForm({
       nom: image.nom || '',
       prix: image.prix || '',
-      devise: image.devise || 'FCFA',
       description: image.description || '',
-      enStock: image.enStock !== undefined ? image.enStock : true,
-      quantite: image.quantite || 1,
-      longueur: image.dimensions?.longueur || '',
-      largeur: image.dimensions?.largeur || '',
-      hauteur: image.dimensions?.hauteur || '',
-      materiau: image.materiau || '',
     })
     setShowEditModal(true)
   }
@@ -186,16 +157,7 @@ const ManageImages = () => {
       const updateData = {
         nom: productForm.nom,
         prix: parseFloat(productForm.prix) || 0,
-        devise: productForm.devise,
         description: productForm.description,
-        enStock: productForm.enStock,
-        quantite: parseInt(productForm.quantite) || 1,
-        dimensions: {
-          longueur: parseFloat(productForm.longueur) || null,
-          largeur: parseFloat(productForm.largeur) || null,
-          hauteur: parseFloat(productForm.hauteur) || null,
-        },
-        materiau: productForm.materiau,
       }
 
       await imageService.updateImage(currentImage._id, updateData)
@@ -203,7 +165,7 @@ const ManageImages = () => {
       setShowEditModal(false)
       setCurrentImage(null)
       resetForm()
-      loadData()
+      loadData(false)
     } catch (err) {
       console.error('Erreur modification:', err)
       setError(err.message)
@@ -213,14 +175,10 @@ const ManageImages = () => {
   }
 
   const handleDelete = async (imageId, publicId) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
-      return
-    }
-
     try {
       await imageService.deleteImage(imageId)
       setSuccess('Produit supprimé avec succès')
-      loadData()
+      loadData(false)
     } catch (err) {
       console.error('Erreur suppression:', err)
       setError(err.message)
@@ -259,7 +217,6 @@ const ManageImages = () => {
     }
   }
 
-  // Icône appareil photo
   const CameraIcon = () => (
     <svg
       width='28'
@@ -272,7 +229,6 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône warning
   const WarningIcon = () => (
     <svg
       width='20'
@@ -285,7 +241,6 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône succès
   const SuccessIcon = () => (
     <svg
       width='20'
@@ -298,7 +253,6 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône upload
   const UploadIcon = () => (
     <svg
       width='24'
@@ -311,7 +265,6 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône info
   const InfoIcon = () => (
     <svg
       width='20'
@@ -324,7 +277,6 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône cadre
   const FrameIcon = () => (
     <svg
       width='60'
@@ -337,7 +289,6 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône ampoule
   const LightbulbIcon = () => (
     <svg
       width='16'
@@ -350,21 +301,18 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône crayon
   const PencilIcon = () => (
     <svg width='16' height='16' viewBox='0 0 24 24' fill='#3B82F6'>
       <path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z' />
     </svg>
   )
 
-  // Icône corbeille
   const TrashIcon = () => (
     <svg width='16' height='16' viewBox='0 0 24 24' fill='#DC2626'>
       <path d='M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z' />
     </svg>
   )
 
-  // Icône œil pour prévisualisation
   const EyeIcon = () => (
     <svg
       width='16'
@@ -377,7 +325,6 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône check pour terminé
   const CheckIcon = () => (
     <svg
       width='16'
@@ -390,7 +337,6 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône flèche gauche
   const ArrowLeftIcon = () => (
     <svg
       width='16'
@@ -403,7 +349,6 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône plus pour modal
   const PlusIcon = () => (
     <svg
       width='20'
@@ -416,7 +361,6 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône crayon pour modal
   const EditIcon = () => (
     <svg
       width='20'
@@ -429,7 +373,6 @@ const ManageImages = () => {
     </svg>
   )
 
-  // Icône croix pour fermeture
   const CrossIcon = () => (
     <svg width='16' height='16' viewBox='0 0 24 24' fill='#6B7280'>
       <path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z' />
@@ -464,9 +407,9 @@ const ManageImages = () => {
   }
 
   return (
+    <>
     <AdminLayout>
       <div className='manage-images'>
-        {/* Header */}
         <div className='page-header'>
           <div>
             <Link
@@ -485,7 +428,6 @@ const ManageImages = () => {
           </div>
         </div>
 
-        {/* Alerts */}
         {error && (
           <div className='alert alert-error'>
             <span style={{ display: 'flex', alignItems: 'center' }}>
@@ -504,7 +446,6 @@ const ManageImages = () => {
           </div>
         )}
 
-        {/* Upload Zone */}
         <div className='upload-section'>
           <div className='upload-zone'>
             <input
@@ -569,7 +510,6 @@ const ManageImages = () => {
           </div>
         </div>
 
-        {/* Images Grid */}
         {images.length === 0 ? (
           <div className='empty-state'>
             <FrameIcon />
@@ -627,7 +567,7 @@ const ManageImages = () => {
                     </button>
                     <button
                       className='btn-delete-image'
-                      onClick={() => handleDelete(image._id, image.publicId)}
+                      onClick={() => setConfirmDelete({ id: image._id, publicId: image.publicId })}
                       title='Supprimer'
                     >
                       <TrashIcon />
@@ -643,7 +583,6 @@ const ManageImages = () => {
           </div>
         )}
 
-        {/* Modal Ajout Produit */}
         {showAddModal && (
           <ProductFormModal
             title={
@@ -665,7 +604,6 @@ const ManageImages = () => {
           />
         )}
 
-        {/* Modal Modification Produit */}
         {showEditModal && currentImage && (
           <ProductFormModal
             title={
@@ -688,7 +626,6 @@ const ManageImages = () => {
           />
         )}
 
-        {/* Action Footer */}
         <div className='action-footer'>
           <Link
             to='/'
@@ -710,113 +647,14 @@ const ManageImages = () => {
         </div>
       </div>
     </AdminLayout>
-  )
-}
-
-// Composant Modal de formulaire réutilisable
-const ProductFormModal = ({
-  title,
-  imageUrl,
-  formData,
-  onChange,
-  onSubmit,
-  onClose,
-  closeIcon,
-}) => {
-  return (
-    <div className='modal-overlay' onClick={onClose}>
-      <div
-        className='modal-content product-modal'
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className='modal-header'>
-          <h3>{title}</h3>
-          <button className='btn-close' onClick={onClose}>
-            {closeIcon}
-          </button>
-        </div>
-
-        <form onSubmit={onSubmit} className='product-form'>
-          {/* Aperçu image */}
-          <div className='form-section'>
-            <div className='image-preview-large'>
-              <img src={imageUrl} alt='Aperçu' />
-            </div>
-          </div>
-
-          {/* Informations de base */}
-          <div className='form-section'>
-            <h4>Informations de base</h4>
-
-            <div className='form-group'>
-              <label htmlFor='nom'>Nom du produit *</label>
-              <input
-                type='text'
-                id='nom'
-                name='nom'
-                value={formData.nom}
-                onChange={onChange}
-                placeholder='Ex: Coiffure Homme'
-                required
-              />
-            </div>
-
-            <div className='form-row'>
-              <div className='form-group'>
-                <label htmlFor='prix'>Prix</label>
-                <input
-                  type='number'
-                  id='prix'
-                  name='prix'
-                  value={formData.prix}
-                  onChange={onChange}
-                  placeholder='45000'
-                  min='0'
-                />
-              </div>
-
-              <div className='form-group'>
-                <label htmlFor='devise'>Devise</label>
-                <select
-                  id='devise'
-                  name='devise'
-                  value={formData.devise}
-                  onChange={onChange}
-                >
-                  <option value='FCFA'>FCFA</option>
-                  <option value='EUR'>EUR</option>
-                  <option value='USD'>USD</option>
-                </select>
-              </div>
-            </div>
-
-            <div className='form-group'>
-              <label htmlFor='description'>Description</label>
-              <textarea
-                id='description'
-                name='description'
-                value={formData.description}
-                onChange={onChange}
-                placeholder='Décrivez le produit...'
-                rows='3'
-              />
-            </div>
-          </div>
-
-          <div className='modal-actions'>
-            <button type='button' className='btn-secondary' onClick={onClose}>
-              Annuler
-            </button>
-            <button type='submit' className='btn-primary'>
-              {typeof title === 'object' &&
-              title.props.children[1] === 'Modifier'
-                ? 'Modifier'
-                : 'Ajouter'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <ConfirmModal
+      isOpen={!!confirmDelete}
+      message='Êtes-vous sûr de vouloir supprimer ce produit ?'
+      confirmText='Supprimer'
+      onConfirm={() => { handleDelete(confirmDelete.id, confirmDelete.publicId); setConfirmDelete(null) }}
+      onCancel={() => setConfirmDelete(null)}
+    />
+  </>
   )
 }
 

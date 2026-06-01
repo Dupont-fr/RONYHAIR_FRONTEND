@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router'
 import Navbar from '../Navbar'
 import Footer from '../footer/Footer'
 import './styles/FAQ.css'
@@ -97,13 +98,18 @@ const FAQ = () => {
   // Composant pour l'icône de point d'interrogation
   const QuestionMarkIcon = () => (
     <svg
-      width='24'
-      height='24'
+      width='36'
+      height='36'
       viewBox='0 0 24 24'
-      fill='currentColor'
-      style={{ verticalAlign: 'middle', marginRight: '8px' }}
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='1.5'
+      strokeLinecap='round'
+      strokeLinejoin='round'
     >
-      <path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z' />
+      <circle cx='12' cy='12' r='10' />
+      <path d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3' />
+      <line x1='12' y1='17' x2='12.01' y2='17' />
     </svg>
   )
 
@@ -138,10 +144,10 @@ const FAQ = () => {
       <Navbar categories={[]} />
       <div className='faq-page'>
         <div className='faq-hero'>
-          <h1>
+          <div className='faq-hero-icon'>
             <QuestionMarkIcon />
-            Questions Fréquentes
-          </h1>
+          </div>
+          <h1>Questions Fréquentes</h1>
           <p>
             Trouvez rapidement des réponses à vos questions sur nos services
           </p>
@@ -183,10 +189,10 @@ const FAQ = () => {
             <h3>Vous ne trouvez pas de réponse ?</h3>
             <p>Notre équipe est là pour vous aider !</p>
             <div className='contact-buttons'>
-              <a href='/contact' className='btn-contact'>
+              <Link to='/contact' className='btn-contact'>
                 <EmailIcon />
                 Nous contacter
-              </a>
+              </Link>
 
               <a href='tel:696409306' className='btn-phone'>
                 <PhoneIcon />

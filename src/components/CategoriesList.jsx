@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import * as categoryService from '../services/categoryService'
 import AdminLayout from '../components/AdminLayout'
+import ConfirmModal from './ConfirmModal'
 import './styles/CategoriesList.css'
 
 const CategoriesList = () => {
@@ -9,6 +10,7 @@ const CategoriesList = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
+  const [confirmDelete, setConfirmDelete] = useState(null)
 
   useEffect(() => {
     loadCategories()
@@ -20,9 +22,10 @@ const CategoriesList = () => {
     }
   }, [success])
 
-  const loadCategories = async () => {
+  const loadCategories = async (showLoading = true) => {
+    const start = showLoading ? Date.now() : 0
+    if (showLoading) setLoading(true)
     try {
-      setLoading(true)
       const data = await categoryService.getAllCategories()
       setCategories(data.categories || [])
       setError(null)
@@ -30,30 +33,18 @@ const CategoriesList = () => {
       console.error('Erreur chargement catégories:', err)
       setError(err.message)
     } finally {
-      setLoading(false)
+      if (showLoading) {
+        const elapsed = Date.now() - start
+        setTimeout(() => setLoading(false), Math.max(0, 300 - elapsed))
+      }
     }
   }
 
-  const handleDelete = async (id, nom, nombreImages) => {
-    if (nombreImages > 0) {
-      alert(
-        `Impossible de supprimer "${nom}". Cette catégorie contient ${nombreImages} image(s).`,
-      )
-      return
-    }
-
-    if (
-      !window.confirm(
-        `Êtes-vous sûr de vouloir supprimer la catégorie "${nom}" ?`,
-      )
-    ) {
-      return
-    }
-
+  const handleDelete = async (id, nom) => {
     try {
       await categoryService.deleteCategory(id)
       setSuccess('Catégorie supprimée avec succès')
-      loadCategories()
+      loadCategories(false)
     } catch (err) {
       console.error('Erreur suppression:', err)
       setError(err.message)
@@ -329,13 +320,13 @@ const CategoriesList = () => {
 
                   <button
                     className='btn-action btn-danger'
-                    onClick={() =>
-                      handleDelete(
-                        category._id,
-                        category.nom,
-                        category.nombreImages,
-                      )
-                    }
+                    onClick={() => {
+                      if (category.nombreImages > 0) {
+                        alert(`Impossible de supprimer "${category.nom}". Cette catégorie contient ${category.nombreImages} image(s).`)
+                        return
+                      }
+                      setConfirmDelete({ id: category._id, nom: category.nom })
+                    }}
                     disabled={category.nombreImages > 0}
                     title={
                       category.nombreImages > 0
@@ -353,6 +344,13 @@ const CategoriesList = () => {
           </div>
         )}
       </div>
+      <ConfirmModal
+        isOpen={!!confirmDelete}
+        message={`Êtes-vous sûr de vouloir supprimer la catégorie "${confirmDelete?.nom}" ?`}
+        confirmText='Supprimer'
+        onConfirm={() => { handleDelete(confirmDelete.id, confirmDelete.nom); setConfirmDelete(null) }}
+        onCancel={() => setConfirmDelete(null)}
+      />
     </AdminLayout>
   )
 }

@@ -1,33 +1,14 @@
 import axios from 'axios'
+import { API } from './apiConfig'
 
-// const publicBaseUrl = '/api/categories'
-
-const publicBaseUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'https://rony-hair-237.onrender.com/api/categories'
-    : '/api/categories'
-
-// ============================================
-// ROUTES PUBLIQUES (Sans authentification)
-// ============================================
-
-// Récupérer toutes les catégories actives avec leurs images
 export const getPublicCategories = async () => {
-  const response = await axios.get(publicBaseUrl)
+  const response = await axios.get(API.categories)
   return response.data
 }
 
-// Récupérer une catégorie par slug avec ses images
 export const getCategoryBySlug = async (slug) => {
-  const response = await axios.get(`${publicBaseUrl}/${slug}`)
+  const response = await axios.get(`${API.categories}/${slug}`)
   return response.data
 }
 
-// ============================================
-// EXPORT PAR DÉFAUT
-// ============================================
-
-export default {
-  getPublicCategories,
-  getCategoryBySlug,
-}
+export default { getPublicCategories, getCategoryBySlug }

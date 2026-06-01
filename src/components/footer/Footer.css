@@ -1,4 +1,3 @@
-/* 🆕 Footer principal */
 .footer {
   background: linear-gradient(135deg, #02040e 0%, #84234c 100%);
   color: #fff;
@@ -17,7 +16,6 @@
   gap: 40px;
 }
 
-/* 🆕 Sections du footer */
 .footer-section {
   min-width: 0;
 }
@@ -47,7 +45,6 @@
   margin-bottom: 20px;
 }
 
-/* 🆕 Réseaux sociaux */
 .footer-social {
   display: flex;
   gap: 16px;
@@ -58,21 +55,43 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #180a16;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #b3b3b3;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.footer-social a[aria-label='Facebook'] {
+  background-color: #1877F2;
+  color: #fff;
+}
+
+.footer-social a[aria-label='Instagram'],
+.footer-social a.instagram-btn {
+  background-color: #E4405F;
+  color: #fff;
+}
+
+.footer-social a[aria-label='WhatsApp'],
+.footer-social a.whatsapp-btn {
+  background-color: #25D366;
+  color: #fff;
+}
+
+.footer-social a[aria-label='LinkedIn'] {
+  background-color: #0A66C2;
+  color: #fff;
 }
 
 .footer-social a:hover {
-  background-color: #1877f2;
-  color: #fff;
   transform: translateY(-3px);
+  filter: brightness(1.15);
 }
 
-/* 🆕 Liens du footer */
+.footer-social a svg {
+  display: block;
+}
+
 .footer-links {
   list-style: none;
   padding: 0;
@@ -84,19 +103,24 @@
 }
 
 .footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   color: #b3b3b3;
   text-decoration: none;
   font-size: 14px;
-  transition: color 0.3s ease;
-  display: inline-block;
+  transition: all 0.3s ease;
 }
 
 .footer-links a:hover {
-  color: #1877f2;
-  padding-left: 5px;
+  color: #ffffff;
+  padding-left: 8px;
 }
 
-/* 🆕 Contact */
+.footer-links a:hover .footer-icon-svg {
+  color: #ffffff;
+}
+
 .footer-contact {
   font-size: 14px;
 }
@@ -107,23 +131,71 @@
   gap: 10px;
   margin-bottom: 12px;
   color: #b3b3b3;
+  transition: all 0.3s ease;
+  cursor: default;
 }
 
-.contact-icon {
-  font-size: 18px;
+.footer-contact p:hover {
+  color: #ffffff;
+  padding-left: 4px;
 }
 
 .footer-contact a {
-  color: #b3b3b3;
+  color: inherit;
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .footer-contact a:hover {
   color: #1877f2;
 }
 
-/* 🆕 Footer bottom */
+.footer-icon-svg {
+  flex-shrink: 0;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.footer-links a:hover .footer-icon-svg,
+.footer-contact p:hover .footer-icon-svg {
+  transform: scale(1.2);
+  color: #ffffff;
+}
+
+.footer-credit {
+  color: #b3b3b3;
+}
+
+.footer-credit a {
+  color: #8b5cf6;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer-credit a:hover {
+  color: #a78bfa;
+  padding-left: 3px;
+}
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  color: #5945d8;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.home-link:hover {
+  color: #7c65e8;
+  padding-left: 4px;
+}
+
+.icon-terms { color: #f59e0b; }
+.icon-privacy { color: #10b981; }
+.icon-faq { color: #8b5cf6; }
+.icon-email { color: #3b82f6; }
+.icon-phone { color: #25D366; }
+.icon-map { color: #ef4444; }
+
 .footer-bottom {
   border-top: 1px solid #2a2a2a;
   padding: 20px;
@@ -157,69 +229,58 @@
   color: #b3b3b3;
   text-decoration: none;
   font-size: 14px;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .footer-bottom-links a:hover {
-  color: #1877f2;
+  color: #ffffff;
+  transform: translateX(3px);
 }
 
 .separator {
   color: #4a4a4a;
 }
 
-/* 🆕 RESPONSIVE - TABLET (max-width: 768px) */
 @media (max-width: 768px) {
   .footer-main {
     padding: 40px 20px 30px;
   }
-
   .footer-container {
     grid-template-columns: repeat(2, 1fr);
     gap: 30px;
   }
-
   .footer-title {
     font-size: 16px;
     margin-bottom: 16px;
   }
-
   .footer-social {
     gap: 12px;
   }
-
   .footer-social a {
     width: 36px;
     height: 36px;
   }
-
   .footer-bottom-content {
     flex-direction: column;
     text-align: center;
   }
 }
 
-/* 🆕 RESPONSIVE - MOBILE (max-width: 480px) */
 @media (max-width: 480px) {
   .footer-main {
     padding: 30px 16px 20px;
   }
-
   .footer-container {
     grid-template-columns: 1fr;
     gap: 0;
   }
-
-  /* 🆕 Sections accordéon sur mobile */
   .footer-section {
     border-bottom: 1px solid #2a2a2a;
     padding: 20px 0;
   }
-
   .footer-section:last-child {
     border-bottom: none;
   }
-
   .footer-title {
     font-size: 16px;
     margin-bottom: 0;
@@ -227,267 +288,107 @@
     padding: 4px 0;
     user-select: none;
   }
-
   .footer-toggle {
     display: block;
     transition: transform 0.3s ease;
   }
-
-  /* 🆕 Contenu caché par défaut sur mobile */
   .footer-content,
   .footer-links {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
   }
-
-  /* 🆕 Contenu visible quand ouvert */
   .footer-content.open,
   .footer-links.open {
     max-height: 1000px;
     margin-top: 16px;
   }
-
-  /* 🆕 Description plus courte sur mobile */
   .footer-description {
     font-size: 13px;
     line-height: 1.6;
   }
-
-  /* 🆕 Réseaux sociaux centrés sur mobile */
   .footer-social {
     justify-content: center;
     margin-top: 16px;
   }
-
   .footer-social a {
     width: 38px;
     height: 38px;
   }
-
-  /* 🆕 Liens plus espacés sur mobile */
   .footer-links li {
     margin-bottom: 14px;
   }
-
   .footer-links a {
     font-size: 15px;
     display: block;
     padding: 4px 0;
   }
-
-  /* 🆕 Contact adapté mobile */
   .footer-contact p {
     font-size: 14px;
     margin-bottom: 14px;
   }
-
-  /* 🆕 Footer bottom responsive */
   .footer-bottom {
     padding: 16px;
   }
-
   .footer-bottom-content {
     gap: 12px;
   }
-
   .footer-copyright {
     font-size: 12px;
   }
-
   .footer-bottom-links {
     font-size: 12px;
     gap: 12px;
   }
-
   .footer-bottom-links a {
     font-size: 12px;
   }
 }
 
-/* 🆕 RESPONSIVE - TRÈS PETIT MOBILE (max-width: 360px) */
 @media (max-width: 360px) {
   .footer-main {
     padding: 20px 12px 16px;
   }
-
   .footer-section {
     padding: 16px 0;
   }
-
   .footer-title {
     font-size: 15px;
   }
-
   .footer-description {
     font-size: 12px;
   }
-
   .footer-social a {
     width: 36px;
     height: 36px;
   }
-
   .footer-contact p {
     font-size: 13px;
   }
-
   .footer-bottom {
     padding: 12px;
   }
-
   .footer-copyright,
   .footer-bottom-links a {
     font-size: 11px;
   }
 }
 
-/* 🆕 Animation smooth pour l'accordéon */
-@media (max-width: 480px) {
-  .footer-title.active .footer-toggle {
-    transform: rotate(180deg);
-  }
-}
-
-/* 🆕 Amélioration de l'accessibilité */
 .footer a:focus,
 .footer button:focus {
   outline: 2px solid #1877f2;
   outline-offset: 2px;
 }
 
-/* 🆕 Mode sombre amélioré */
 @media (prefers-color-scheme: dark) {
   .footer {
     background-color: #0a0a0a;
   }
-
   .footer-main {
     background-color: #0a0a0a;
   }
-
   .footer-bottom {
     background-color: #000;
     border-top-color: #1a1a1a;
-  }
-}
-
-/* ... Gardez vos styles existants et ajoutez/modifiez ceux-ci : ... */
-
-.footer-links a {
-  display: flex;
-  align-items: center;
-  gap: 12px; /* Espace entre l'icône et le texte */
-  color: #b3b3b3;
-  text-decoration: none;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.contact-icon-svg {
-  color: #1877f2; /* Couleur dominante pour les icônes */
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-}
-
-.footer-links a:hover {
-  color: #1877f2;
-  padding-left: 5px;
-}
-
-.footer-links a:hover .contact-icon-svg {
-  transform: scale(1.1);
-}
-
-.footer-contact p {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.credit-line {
-  margin-top: 20px;
-  font-size: 12px;
-  border-top: 1px solid #2a2a2a;
-  padding-top: 15px;
-  opacity: 0.8;
-}
-
-/* Ajustement pour mobile */
-@media (max-width: 480px) {
-  .footer-links a {
-    font-size: 15px;
-    padding: 8px 0;
-  }
-}
-/* Gardez vos bases et modifiez ces parties spécifiques */
-
-.footer-links a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #b3b3b3;
-  text-decoration: none;
-  font-size: 14px;
-  transition: all 0.3s ease;
-  padding: 4px 0;
-}
-
-.footer-icon-svg {
-  color: #1877f2; /* Bleu par défaut pour les icônes de support */
-  flex-shrink: 0;
-}
-
-.footer-links a:hover {
-  color: #1877f2;
-  transform: translateX(5px);
-}
-
-/* Styles spéciaux pour les réseaux sociaux */
-.footer-social a:hover {
-  background-color: #1877f2;
-  color: #fff;
-  transform: translateY(-3px);
-}
-
-/* Effet spécifique WhatsApp */
-.footer-social a.whatsapp-btn:hover {
-  background-color: #25d366; /* Vert WhatsApp officiel */
-}
-
-.footer-contact p {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #b3b3b3;
-  margin-bottom: 12px;
-}
-
-.footer-company-credit {
-  margin-top: 20px;
-  font-size: 12px;
-  border-top: 1px solid #2a2a2a;
-  padding-top: 15px;
-}
-
-.footer-company-credit a {
-  font-weight: 600;
-  color: #fff;
-}
-
-/* Animation de l'accordéon mobile */
-@media (max-width: 480px) {
-  .footer-content,
-  .footer-links {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .footer-content.open,
-  .footer-links.open {
-    max-height: 500px;
-    margin-top: 15px;
   }
 }

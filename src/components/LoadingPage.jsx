@@ -12,16 +12,9 @@ const Loading = ({ onLoadingComplete }) => {
   return (
     <div className='loading-container'>
       <div className='loading-content'>
-        {/* Logo original depuis le dossier public */}
         <div className='logo-container'>
-          <img
-            src='/logo.jpeg'
-            alt='Rony Hair - Salon Mixte & Barbier'
-            className='main-logo'
-          />
+          <img src='/logo.jpeg' alt='Rony Hair - Salon Mixte & Barbier' className='main-logo' />
         </div>
-
-        {/* Barre de chargement */}
         <div className='loading-animation'>
           <div className='loading-bar-container'>
             <div className='loading-bar'></div>

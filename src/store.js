@@ -6,13 +6,9 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     categories: categoryReducer,
-    // products: productReducer, // À ajouter
-    // reviews: reviewReducer,    // À ajouter
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
+    getDefaultMiddleware({ serializableCheck: false }),
 })
 
 export default store

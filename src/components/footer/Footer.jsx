@@ -10,7 +10,6 @@ const Footer = () => {
   }
 
   const handleLinkClick = () => {
-    // Défiler vers le haut avec animation
     window.scrollTo({
       top: 0,
       left: 0,
@@ -18,7 +17,6 @@ const Footer = () => {
     })
   }
 
-  // Composant pour les icônes SVG uniformes
   const Icon = ({ name, size = 18 }) => {
     const icons = {
       terms: (
@@ -62,7 +60,7 @@ const Footer = () => {
           name === 'whatsapp' || name === 'facebook' ? 'currentColor' : 'none'
         }
         stroke={name === 'whatsapp' ? 'none' : 'currentColor'}
-        strokeWidth='2'
+        strokeWidth={name === 'whatsapp' ? undefined : '2'}
       >
         {icons[name]}
         {name === 'privacy' && <path d='M7 11V7a5 5 0 0 1 10 0v4' />}
@@ -79,7 +77,6 @@ const Footer = () => {
     <footer className='footer'>
       <div className='footer-main'>
         <div className='footer-container'>
-          {/* Section 1 : À propos */}
           <div className='footer-section'>
             <h3 className='footer-title' onClick={() => toggleSection('about')}>
               À propos de RONY HAIR 237
@@ -129,7 +126,7 @@ const Footer = () => {
                   aria-label='WhatsApp'
                   className='whatsapp-btn'
                 >
-                  <Icon name='whatsapp' size={20} />
+                  <Icon name='whatsapp' size={18} />
                 </a>
                 <a
                   href='https://www.facebook.com/ronyhair237'
@@ -150,7 +147,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Section 2 : Support & Légal */}
           <div className='footer-section'>
             <h3
               className='footer-title'
@@ -184,15 +180,9 @@ const Footer = () => {
                   <Icon name='email' /> Nous contacter
                 </Link>
               </li>
-              {/* <li>
-                <Link to='/help'>
-                  <Icon name='help' /> Centre d'aide
-                </Link>
-              </li> */}
             </ul>
           </div>
 
-          {/* Section 3 : Contact */}
           <div className='footer-section'>
             <h3
               className='footer-title'
@@ -267,7 +257,6 @@ const Footer = () => {
               <span className='separator'>•</span>
               <Link to='/confidentialite'>Confidentialité</Link>
               <span className='separator'></span>
-              {/* <Link to='/sitemap'>Plan du site</Link> */}
             </div>
           </div>
         </div>

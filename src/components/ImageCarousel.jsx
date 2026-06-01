@@ -1,11 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-// import ProductModal from './ProductModal'
+import ProductModal from './ProductModal'
 import PromoBanner from './promos/PromoBanner'
 import TombolaRotator from './promos/TombolaRotator'
-import * as promotionService from '../services/promotionService'
+import { getOptimizedImageUrl } from '../services/apiConfig'
 import './styles/ImageCarousel.css'
-import { BackgroundColor } from '@cloudinary/url-gen/actions/background/actions/BackgroundColor'
 
 const ImageCarousel = ({
   images,
@@ -15,65 +14,40 @@ const ImageCarousel = ({
   showTombola,
   tombolaPromotion,
   allCategories,
+  categoryPromotion,
 }) => {
   const navigate = useNavigate()
   const scrollContainerRef = useRef(null)
   const [selectedProduct, setSelectedProduct] = useState(null)
-  const [categoryPromotion, setCategoryPromotion] = useState(null)
   const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
-    if (categoryId) {
-      loadCategoryPromotion()
-    }
-  }, [categoryId])
-
-  // AUTO-SCROLL AUTOMATIQUE
-  useEffect(() => {
-    // Ne pas démarrer si moins de 2 images ou en pause
     if (!images || images.length <= 1 || isPaused) return
 
     const interval = setInterval(() => {
       const container = scrollContainerRef.current
       if (!container) return
 
-      // Largeur d'une carte + gap
-      const cardWidth = window.innerWidth < 600 ? 272 : 294 // 260+12 ou 280+14
+      const cardWidth = window.innerWidth < 600 ? 272 : 294
       const maxScroll = container.scrollWidth - container.clientWidth
 
-      // Si on est à la fin, retour au début
       if (container.scrollLeft >= maxScroll - 20) {
         container.scrollTo({ left: 0, behavior: 'smooth' })
       } else {
-        // Sinon, avancer d'une carte
         container.scrollTo({
           left: container.scrollLeft + cardWidth,
           behavior: 'smooth',
         })
       }
-    }, 3000) // Change toutes les 3 secondes
+    }, 3000)
 
     return () => clearInterval(interval)
   }, [images, isPaused])
-
-  const loadCategoryPromotion = async () => {
-    try {
-      const data = await promotionService.getPromotionByCategory(categoryId)
-      setCategoryPromotion(data.promotion)
-    } catch (error) {
-      console.error('Erreur chargement promo:', error)
-    }
-  }
-
-  const handlePromoExpire = () => {
-    setCategoryPromotion(null)
-  }
 
   const scroll = (direction) => {
     const container = scrollContainerRef.current
     if (!container) return
 
-    // Pause l'auto-scroll pendant 5 secondes après un clic manuel
     setIsPaused(true)
     setTimeout(() => setIsPaused(false), 5000)
 
@@ -116,20 +90,17 @@ const ImageCarousel = ({
           />
         )}
 
-        {categoryPromotion && !showTombola && (
+        {categoryPromotion && (
           <PromoBanner
             promotion={categoryPromotion}
             categorySlug={categorySlug}
-            onExpire={handlePromoExpire}
           />
         )}
 
         <div className='carousel-header'>
           <ul>
             <li style={{ fontSize: '180px', fontWeight: 'bold' }}>
-              <div
-                style={{ display: 'flex', alignItems: 'center', gap: '12px' }}
-              >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   width='24'
@@ -155,16 +126,12 @@ const ImageCarousel = ({
               className='carousel-btn carousel-btn-left'
               onClick={() => scroll('left')}
               aria-label='Précédent'
-            >
-              ‹
-            </button>
+            >‹</button>
             <button
               className='carousel-btn carousel-btn-right'
               onClick={() => scroll('right')}
               aria-label='Suivant'
-            >
-              ›
-            </button>
+            >›</button>
           </div>
         </div>
 
@@ -185,9 +152,10 @@ const ImageCarousel = ({
               >
                 <div className='product-image'>
                   <img
-                    src={image.url}
+                    src={getOptimizedImageUrl(image.url, { width: 294, quality: 80 })}
                     alt={image.nom || `${categoryName} ${index + 1}`}
                     loading='lazy'
+                    decoding='async'
                   />
                 </div>
 
@@ -217,9 +185,9 @@ const ImageCarousel = ({
         </div>
       </div>
 
-      {/* {selectedProduct && (
+      {selectedProduct && (
         <ProductModal product={selectedProduct} onClose={handleCloseModal} />
-      )} */}
+      )}
     </>
   )
 }

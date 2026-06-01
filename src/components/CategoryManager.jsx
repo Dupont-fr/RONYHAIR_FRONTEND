@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import * as categoryService from '../services/categoryService'
 import * as authService from '../services/authService'
+import ConfirmModal from './ConfirmModal'
 import './styles/CategoryManager.css'
 
 const CategoryManager = () => {
@@ -19,6 +20,8 @@ const CategoryManager = () => {
     image: '',
     ordre: 0,
   })
+  const [confirmDelete, setConfirmDelete] = useState(null)
+  const [confirmLogout, setConfirmLogout] = useState(false)
 
   // Récupérer les infos admin
   const admin = authService.getAdminFromStorage()
@@ -33,9 +36,10 @@ const CategoryManager = () => {
     }
   }, [success])
 
-  const loadCategories = async () => {
+  const loadCategories = async (showLoading = true) => {
+    const start = showLoading ? Date.now() : 0
+    if (showLoading) setLoading(true)
     try {
-      setLoading(true)
       const data = await categoryService.getAllCategories()
       setCategories(data.categories || [])
       setError(null)
@@ -43,7 +47,10 @@ const CategoryManager = () => {
       console.error('Erreur chargement catégories:', err)
       setError(err.message)
     } finally {
-      setLoading(false)
+      if (showLoading) {
+        const elapsed = Date.now() - start
+        setTimeout(() => setLoading(false), Math.max(0, 300 - elapsed))
+      }
     }
   }
 
@@ -98,7 +105,7 @@ const CategoryManager = () => {
       }
 
       handleCloseModal()
-      loadCategories()
+      loadCategories(false)
     } catch (err) {
       console.error('Erreur:', err)
       setError(err.message)
@@ -106,16 +113,10 @@ const CategoryManager = () => {
   }
 
   const handleDelete = async (id) => {
-    if (
-      !window.confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')
-    ) {
-      return
-    }
-
     try {
       await categoryService.deleteCategory(id)
       setSuccess('Catégorie supprimée avec succès')
-      loadCategories()
+      loadCategories(false)
     } catch (err) {
       console.error('Erreur suppression:', err)
       setError(err.message)
@@ -123,10 +124,8 @@ const CategoryManager = () => {
   }
 
   const handleLogout = async () => {
-    if (window.confirm('Voulez-vous vraiment vous déconnecter ?')) {
-      await authService.logoutAdmin()
-      navigate('/admin/login')
-    }
+    await authService.logoutAdmin()
+    navigate('/admin/login')
   }
 
   // Icône bûche de bois
@@ -299,6 +298,7 @@ const CategoryManager = () => {
   }
 
   return (
+    <>
     <div className='admin-layout'>
       {/* Header */}
       <header className='admin-header'>
@@ -315,7 +315,7 @@ const CategoryManager = () => {
               <UserIcon />
               {admin?.nom}
             </span>
-            <button onClick={handleLogout} className='btn-logout'>
+            <button onClick={() => setConfirmLogout(true)} className='btn-logout'>
               Déconnexion
             </button>
           </div>
@@ -445,7 +445,7 @@ const CategoryManager = () => {
                     </button>
                     <button
                       className='btn-delete'
-                      onClick={() => handleDelete(category._id)}
+                      onClick={() => setConfirmDelete(category._id)}
                       title='Supprimer'
                       disabled={category.nombreProduits > 0}
                     >
@@ -558,6 +558,21 @@ const CategoryManager = () => {
         </div>
       )}
     </div>
+    <ConfirmModal
+      isOpen={!!confirmDelete}
+      message='Êtes-vous sûr de vouloir supprimer cette catégorie ?'
+      confirmText='Supprimer'
+      onConfirm={() => { handleDelete(confirmDelete); setConfirmDelete(null) }}
+      onCancel={() => setConfirmDelete(null)}
+    />
+    <ConfirmModal
+      isOpen={confirmLogout}
+      message='Voulez-vous vraiment vous déconnecter ?'
+      confirmText='Déconnexion'
+      onConfirm={handleLogout}
+      onCancel={() => setConfirmLogout(false)}
+    />
+  </>
   )
 }
 

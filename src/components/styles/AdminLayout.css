@@ -8,39 +8,15 @@
   background: #f7fafc;
 }
 
+.admin-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
 /* ============================================
-   NAVBAR - TOUJOURS VISIBLE
+   BOUTON HAMBURGER
    ============================================ */
-.admin-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
-  z-index: 1000; /* Navbar au-dessus de tout */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-}
-
-.navbar-content {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-  padding: 0 20px;
-}
-
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-/* BOUTON HAMBURGER - SIMPLIFIÉ */
 .hamburger-btn {
   display: flex;
   flex-direction: column;
@@ -51,7 +27,7 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  z-index: 1002; /* Au-dessus de la navbar */
+  z-index: 1002;
   position: relative;
 }
 
@@ -59,30 +35,12 @@
   display: block;
   width: 100%;
   height: 3px;
-  background: #0f1b3d;
+  background: white;
   border-radius: 2px;
   transition: all 0.3s ease;
 }
 
-.mobile-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.brand-text {
-  font-size: 16px;
-  font-weight: 600;
-  color: #2d3748;
-}
-
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-/* INFOS UTILISATEUR DESKTOP - VISIBLE PAR DÉFAUT */
+/* INFOS UTILISATEUR DESKTOP */
 .desktop-user-info {
   display: flex;
   align-items: center;
@@ -90,11 +48,20 @@
 }
 
 .admin-name {
-  color: #4a5568;
+  color: white;
   font-weight: 500;
   font-size: 14px;
   display: flex;
   align-items: center;
+}
+
+.menu-admin-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  font-weight: 400;
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
 }
 
 /* DROPDOWN MOBILE - CACHÉ PAR DÉFAUT */
@@ -106,11 +73,11 @@
 .user-dropdown-btn {
   display: flex;
   align-items: center;
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   padding: 8px 12px;
   cursor: pointer;
-  color: #4b5563;
+  color: white;
   font-size: 14px;
   font-weight: 500;
   border-radius: 6px;
@@ -118,11 +85,7 @@
 }
 
 .user-dropdown-btn:hover {
-  background: #f3f4f6;
-}
-
-.admin-name-mobile {
-  margin: 0 8px;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .dropdown-menu {
@@ -189,13 +152,13 @@
    HEADER
    ============================================ */
 .admin-header {
-  margin-top: 60px; /* Espace pour la navbar fixe */
   background: linear-gradient(135deg, #02040e 0%, #84234c 100%);
   color: white;
-  padding: 60px 0;
+  padding: 20px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 1; /* Sous la navbar */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .header-content {
@@ -205,6 +168,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .header-title h1 {
@@ -222,31 +197,6 @@
   margin: 0;
 }
 
-.header-user-info {
-  display: flex;
-  align-items: center;
-}
-
-.user-info-desktop {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.user-greeting {
-  font-weight: bold;
-  font-size: 20px;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 2px;
-}
-
-.user-name {
-  font-size: 16px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-}
-
 /* ============================================
    SIDEBAR ET OVERLAY
    ============================================ */
@@ -259,16 +209,16 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999; /* Entre la navbar et la sidebar */
+  z-index: 999;
   animation: fadeIn 0.3s ease;
-  display: none; /* Caché par défaut */
+  display: none;
 }
 
 .sidebar-overlay.active {
-  display: block; /* Visible quand le menu est ouvert */
+  display: block;
 }
 
-/* SIDEBAR */
+/* SIDEBAR - MOBILE : overlay qui slide depuis la gauche */
 .admin-sidebar {
   position: fixed;
   top: 0;
@@ -277,7 +227,7 @@
   height: 100vh;
   background: white;
   border-right: 1px solid #e2e8f0;
-  z-index: 1000; /* Au même niveau que la navbar */
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease;
@@ -290,18 +240,12 @@
 
 .sidebar-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  padding: 20px;
+  padding: 15px 20px;
   border-bottom: 1px solid #e2e8f0;
   background: linear-gradient(135deg, #02040e 0%, #84234c 100%);
   color: white;
-}
-
-.sidebar-header h2 {
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0;
 }
 
 .close-sidebar-btn {
@@ -314,15 +258,13 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 18px;
+  color: white;
   transition: all 0.3s ease;
 }
 
 .close-sidebar-btn:hover {
   background: rgba(255, 255, 255, 0.3);
-}
-
-.close-sidebar-btn svg {
-  fill: white;
 }
 
 .sidebar-menu {
@@ -387,7 +329,7 @@
   flex: 1;
   padding: 30px;
   max-width: 100%;
-  margin-top: 60px; /* Espace pour la navbar fixe */
+  margin-top: 0;
 }
 
 .admin-content {
@@ -412,7 +354,7 @@
    ============================================ */
 
 /* MOBILE (par défaut) */
-.mobile-brand {
+.hamburger-btn {
   display: flex;
 }
 
@@ -424,21 +366,13 @@
   display: block;
 }
 
-.admin-name-mobile {
-  display: none;
-}
-
-.hamburger-btn {
-  display: flex;
-}
-
 /* DESKTOP (768px et plus) */
 @media (min-width: 768px) {
-  /* Cacher les éléments mobile */
-  .mobile-brand {
-    display: none;
+  .admin-body {
+    align-items: flex-start;
   }
 
+  /* Cacher les éléments mobile */
   .mobile-user-dropdown {
     display: none;
   }
@@ -453,14 +387,15 @@
     display: none;
   }
 
-  /* Sidebar toujours visible sur desktop  */
+  /* Sidebar sticky alignée sous le header */
   .admin-sidebar {
-    position: fixed;
-    top: 60px;
+    position: sticky;
+    top: 0;
     left: 0;
-    bottom: 0;
-    transform: translateX(0);
+    height: 100vh;
+    transform: none;
     z-index: 900;
+    flex-shrink: 0;
   }
 
   .sidebar-overlay {
@@ -471,16 +406,17 @@
     display: none;
   }
 
-  /* Ajuster les marges pour la sidebar */
+  .sidebar-header {
+    min-height: 0;
+    padding: 0;
+    background: none;
+  }
+
   .admin-main {
-    margin-left: 280px;
+    flex: 1;
+    min-width: 0;
   }
 
-  .admin-header {
-    margin-left: 280px;
-  }
-
-  /* Ajustement du contenu principal */
   .admin-content {
     padding: 0;
   }
@@ -488,20 +424,16 @@
 
 /* PETITS ÉCRANS MOBILE */
 @media (max-width: 480px) {
-  .navbar-content {
-    padding: 0 15px;
-  }
-
   .header-content {
     padding: 0 15px;
   }
 
   .header-title h1 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
-  .brand-text {
-    font-size: 14px;
+  .header-subtitle {
+    font-size: 13px;
   }
 
   .dropdown-menu {

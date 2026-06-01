@@ -13,6 +13,25 @@
 .promo-banner.stock-limite {
   background: linear-gradient(135deg, #d81a88 0%, #690d42 100%);
   color: white;
+  position: relative;
+}
+
+.promo-banner.has-image {
+  position: relative;
+}
+
+.promo-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.promo-banner.has-image .promo-content,
+.promo-banner.has-image .promo-btn {
+  position: relative;
+  z-index: 2;
 }
 
 .promo-content {

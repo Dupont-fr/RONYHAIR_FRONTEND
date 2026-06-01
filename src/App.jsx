@@ -1,141 +1,122 @@
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useState, useEffect, useCallback, useRef } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import * as authService from './services/authService'
-
-// Import du composant de page de chargement
 import LoadingPage from './components/LoadingPage'
 
-import HomePage from './components/HomePage'
-import OrderPage from './components/OrderPage'
-import AdminLogin from './components/AdminLogin'
-import Dashboard from './components/Dashboard'
-import CategoriesList from './components/CategoriesList' // ADMIN
-import PublicCategoriesList from './components/PublicCategoriesList' // PUBLIC
-import CreateCategory from './components/CreateCategory'
-import ManageImages from './components/ManageImages'
-import ManagePromotions from './components/ManagePromotions'
-import Contact from './components/infos/Contact'
-import Conditions from './components/infos/Conditions'
-import Confidentialite from './components/infos/Confidentialite'
-import FAQ from './components/infos/FAQ'
-import CategoryProducts from './components/CategoryProducts'
+const HomePage = React.lazy(() => import('./components/HomePage'))
+const OrderPage = React.lazy(() => import('./components/OrderPage'))
+const AdminLogin = React.lazy(() => import('./components/AdminLogin'))
+const Dashboard = React.lazy(() => import('./components/Dashboard'))
+const CategoriesList = React.lazy(() => import('./components/CategoriesList'))
+const PublicCategoriesList = React.lazy(() => import('./components/PublicCategoriesList'))
+const PublicPromotions = React.lazy(() => import('./components/PublicPromotions'))
+const CreateCategory = React.lazy(() => import('./components/CreateCategory'))
+const ManageImages = React.lazy(() => import('./components/ManageImages'))
+const ManagePromotions = React.lazy(() => import('./components/ManagePromotions'))
+const AdminReviews = React.lazy(() => import('./components/AdminReviews'))
+const ManageAdmins = React.lazy(() => import('./components/ManageAdmins'))
+const Contact = React.lazy(() => import('./components/infos/Contact'))
+const Conditions = React.lazy(() => import('./components/infos/Conditions'))
+const Confidentialite = React.lazy(() => import('./components/infos/Confidentialite'))
+const FAQ = React.lazy(() => import('./components/infos/FAQ'))
+const CategoryProducts = React.lazy(() => import('./components/CategoryProducts'))
+
+const AUTH_CACHE_KEY = 'auth_cache'
+const AUTH_CACHE_TTL = 5 * 60 * 1000
+
+const getCachedAuth = () => {
+  try {
+    const cached = sessionStorage.getItem(AUTH_CACHE_KEY)
+    if (!cached) return null
+    const { data, timestamp } = JSON.parse(cached)
+    if (Date.now() - timestamp > AUTH_CACHE_TTL) {
+      sessionStorage.removeItem(AUTH_CACHE_KEY)
+      return null
+    }
+    return data
+  } catch { return null }
+}
+
+const setCachedAuth = (data) => {
+  try {
+    sessionStorage.setItem(AUTH_CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }))
+  } catch { }
+}
 
 const ProtectedRoute = ({ children }) => {
-  const [isChecking, setIsChecking] = useState(true)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isChecking, setIsChecking] = useState(!getCachedAuth())
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getCachedAuth())
+  const checkRef = useRef(false)
 
   useEffect(() => {
+    if (checkRef.current) return
+    checkRef.current = true
     checkAuth()
   }, [])
 
   const checkAuth = async () => {
+    const cached = getCachedAuth()
+    if (cached) {
+      setIsAuthenticated(cached.success)
+      setIsChecking(false)
+      return
+    }
     try {
       const data = await authService.checkAuthStatus()
+      setCachedAuth(data)
       setIsAuthenticated(data.success)
-    } catch (error) {
-      console.error('Non authentifié:', error)
+    } catch {
       setIsAuthenticated(false)
     } finally {
       setIsChecking(false)
     }
   }
 
-  // On remplace l'ancien loader par le nouveau composant LoadingPage
   if (isChecking) {
-    return <LoadingPage onLoadingComplete={() => setIsChecking(false)} />
+    return <LoadingPage />
   }
 
   return isAuthenticated ? children : <Navigate to='/admin/login' replace />
 }
 
+const PageLoader = () => (
+  <div className='loading-container' style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div className='spinner'></div>
+    <p style={{ marginTop: '16px', color: '#666' }}>Chargement...</p>
+  </div>
+)
+
 function App() {
-  const [isLoading, setIsLoading] = useState(true)
-
-  // MODIFICATION : Ajout d'un état pour gérer le chargement initial de l'application
-  useEffect(() => {
-    // Simuler un temps de chargement initial pour améliorer l'expérience utilisateur
-    // Cette logique peut être étendue pour charger des données globales si nécessaire
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 3500) // Durée de 3.5 secondes pour la page de chargement initiale
-
-    return () => clearTimeout(timer)
+  const preserveScroll = useCallback(() => {
+    const scrollY = window.scrollY
+    setTimeout(() => window.scrollTo(0, scrollY), 0)
   }, [])
-
-  // MODIFICATION : Afficher la page de chargement uniquement au démarrage de l'app
-  if (isLoading) {
-    return <LoadingPage onLoadingComplete={() => setIsLoading(false)} />
-  }
 
   return (
     <BrowserRouter>
-      <Routes>
-        {/* ==================== ROUTES PUBLIQUES ==================== */}
-        <Route path='/' element={<HomePage />} />
-        <Route path='/order' element={<OrderPage />} />
-        <Route path='/contact' element={<Contact />} />
-        <Route path='/conditions' element={<Conditions />} />
-        <Route path='/confidentialite' element={<Confidentialite />} />
-        <Route path='/faq' element={<FAQ />} />
-        <Route path='/categories' element={<PublicCategoriesList />} />
-        <Route path='/category/:slug' element={<CategoryProducts />} />
-
-        {/* ==================== ROUTES ADMIN ==================== */}
-        <Route path='/admin/login' element={<AdminLogin />} />
-
-        <Route
-          path='/admin/dashboard'
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path='/admin/categories'
-          element={
-            <ProtectedRoute>
-              <CategoriesList />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path='/admin/categories/new'
-          element={
-            <ProtectedRoute>
-              <CreateCategory />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path='/admin/categories/:categoryId/images'
-          element={
-            <ProtectedRoute>
-              <ManageImages />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path='/admin/promotions'
-          element={
-            <ProtectedRoute>
-              <ManagePromotions />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path='/admin'
-          element={<Navigate to='/admin/dashboard' replace />}
-        />
-
-        {/* ==================== ROUTE 404 ==================== */}
-        <Route path='*' element={<Navigate to='/' replace />} />
-      </Routes>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/order' element={<OrderPage />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/conditions' element={<Conditions />} />
+          <Route path='/confidentialite' element={<Confidentialite />} />
+          <Route path='/faq' element={<FAQ />} />
+          <Route path='/categories' element={<PublicCategoriesList />} />
+          <Route path='/promotions' element={<PublicPromotions />} />
+          <Route path='/category/:slug' element={<CategoryProducts />} />
+          <Route path='/admin/login' element={<AdminLogin />} />
+          <Route path='/admin/dashboard' element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path='/admin/categories' element={<ProtectedRoute><CategoriesList /></ProtectedRoute>} />
+          <Route path='/admin/categories/new' element={<ProtectedRoute><CreateCategory /></ProtectedRoute>} />
+          <Route path='/admin/categories/:categoryId/images' element={<ProtectedRoute><ManageImages /></ProtectedRoute>} />
+          <Route path='/admin/promotions' element={<ProtectedRoute><ManagePromotions /></ProtectedRoute>} />
+          <Route path='/admin/reviews' element={<ProtectedRoute><AdminReviews /></ProtectedRoute>} />
+          <Route path='/admin/admins' element={<ProtectedRoute><ManageAdmins /></ProtectedRoute>} />
+          <Route path='/admin' element={<Navigate to='/admin/dashboard' replace />} />
+          <Route path='*' element={<Navigate to='/' replace />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   )
 }

@@ -1,87 +1,53 @@
 import axios from 'axios'
-import { getToken } from './authService'
-
-// const adminBaseUrl = '/api/admin/promotions'
-
-const adminBaseUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'https://rony-hair-237.onrender.com/api/admin/promotions'
-    : '/api/admin/promotions'
-
-const publicBaseUrl = '/api/promotions'
-
-// const publicBaseUrl =
-//   process.env.NODE_ENV === 'production'
-//     ? 'https://rony-hair-237.onrender.com/api/promotions'
-//     : '/api/promotions'
-
-const getConfig = () => ({
-  headers: {
-    Authorization: `Bearer ${getToken()}`,
-  },
-})
+import { API, getAuthHeaders } from './apiConfig'
 
 export const getAllPromotions = async () => {
-  const response = await axios.get(adminBaseUrl, getConfig())
+  const response = await axios.get(API.adminPromotions, { headers: getAuthHeaders() })
   return response.data
 }
 
 export const getPromotionById = async (id) => {
-  const response = await axios.get(`${adminBaseUrl}/${id}`, getConfig())
+  const response = await axios.get(`${API.adminPromotions}/${id}`, { headers: getAuthHeaders() })
   return response.data
 }
 
 export const createPromotion = async (promotionData) => {
-  const response = await axios.post(adminBaseUrl, promotionData, getConfig())
+  const response = await axios.post(API.adminPromotions, promotionData, { headers: getAuthHeaders() })
   return response.data
 }
 
 export const updatePromotion = async (id, promotionData) => {
-  const response = await axios.put(
-    `${adminBaseUrl}/${id}`,
-    promotionData,
-    getConfig(),
-  )
+  const response = await axios.put(`${API.adminPromotions}/${id}`, promotionData, { headers: getAuthHeaders() })
   return response.data
 }
 
 export const deletePromotion = async (id) => {
-  const response = await axios.delete(`${adminBaseUrl}/${id}`, getConfig())
+  const response = await axios.delete(`${API.adminPromotions}/${id}`, { headers: getAuthHeaders() })
   return response.data
 }
 
 export const togglePromotion = async (id) => {
-  const response = await axios.patch(
-    `${adminBaseUrl}/${id}/toggle`,
-    {},
-    getConfig(),
-  )
+  const response = await axios.patch(`${API.adminPromotions}/${id}/toggle`, {}, { headers: getAuthHeaders() })
   return response.data
 }
 
 export const getActivePromotions = async () => {
-  const response = await axios.get(`${publicBaseUrl}/active`)
+  const response = await axios.get(`${API.promotions}/active`)
   return response.data
 }
 
 export const getPromotionByCategory = async (categoryId) => {
-  const response = await axios.get(`${publicBaseUrl}/category/${categoryId}`)
+  const response = await axios.get(`${API.promotions}/category/${categoryId}`)
   return response.data
 }
 
 export const getTombolaPromotions = async () => {
-  const response = await axios.get(`${publicBaseUrl}/tombola`)
+  const response = await axios.get(`${API.promotions}/tombola`)
   return response.data
 }
 
 export default {
-  getAllPromotions,
-  getPromotionById,
-  createPromotion,
-  updatePromotion,
-  deletePromotion,
-  togglePromotion,
-  getActivePromotions,
-  getPromotionByCategory,
-  getTombolaPromotions,
+  getAllPromotions, getPromotionById, createPromotion,
+  updatePromotion, deletePromotion, togglePromotion,
+  getActivePromotions, getPromotionByCategory, getTombolaPromotions,
 }

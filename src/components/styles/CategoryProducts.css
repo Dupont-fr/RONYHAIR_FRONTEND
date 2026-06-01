@@ -1,7 +1,7 @@
 .category-products-page {
   min-height: 100vh;
   background: #f7fafc;
-  padding-top: 52px;
+  padding-top: 80px;
 }
 
 .category-header {
@@ -254,7 +254,7 @@
   align-items: center;
   justify-content: center;
   min-height: 80vh;
-  padding: 20px;
+  padding: 80px 20px 20px;
 }
 
 .spinner {

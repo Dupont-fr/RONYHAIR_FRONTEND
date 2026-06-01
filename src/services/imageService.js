@@ -1,135 +1,66 @@
 import axios from 'axios'
-import { getToken } from './authService'
+import { API, getAuthHeaders } from './apiConfig'
 
-// const baseUrl = '/api/admin/categories'
-const baseUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'https://rony-hair-237.onrender.com/api/admin/categories'
-    : '/api/admin/categories'
-
-// Configuration pour inclure le token
-const getConfig = () => ({
-  headers: {
-    Authorization: `Bearer ${getToken()}`,
-  },
-})
-
-// ============================================
-// GESTION DES IMAGES
-// ============================================
-
-// Récupérer toutes les images d'une catégorie
 export const getCategoryImages = async (categoryId) => {
-  const response = await axios.get(
-    `${baseUrl}/${categoryId}/images`,
-    getConfig(),
-  )
+  const response = await axios.get(`${API.adminCategories}/${categoryId}/images`, { headers: getAuthHeaders() })
   return response.data
 }
 
-// Ajouter une image à une catégorie
 export const addImageToCategory = async (categoryId, imageData) => {
-  const response = await axios.post(
-    `${baseUrl}/${categoryId}/images`,
-    imageData,
-    getConfig(),
-  )
+  const response = await axios.post(`${API.adminCategories}/${categoryId}/images`, imageData, { headers: getAuthHeaders() })
   return response.data
 }
 
-// Modifier une image
 export const updateImage = async (imageId, imageData) => {
-  const response = await axios.put(
-    `/api/admin/categories/images/${imageId}`,
-    imageData,
-    getConfig(),
-  )
+  const response = await axios.put(`${API.adminCategories}/images/${imageId}`, imageData, { headers: getAuthHeaders() })
   return response.data
 }
 
-// Supprimer une image
 export const deleteImage = async (imageId) => {
-  const response = await axios.delete(
-    `/api/admin/categories/images/${imageId}`,
-    getConfig(),
-  )
+  const response = await axios.delete(`${API.adminCategories}/images/${imageId}`, { headers: getAuthHeaders() })
   return response.data
 }
 
-// Réorganiser les images
 export const reorderImages = async (categoryId, imageIds) => {
-  const response = await axios.put(
-    `${baseUrl}/${categoryId}/images/reorder`,
-    { imageIds },
-    getConfig(),
-  )
+  const response = await axios.put(`${API.adminCategories}/${categoryId}/images/reorder`, { imageIds }, { headers: getAuthHeaders() })
   return response.data
 }
-
-// ============================================
-// UPLOAD CLOUDINARY menuiserie_unsigned
-// ============================================
 
 const CLOUDINARY_CLOUD_NAME = 'ddnolovmg'
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`
-const CLOUDINARY_UPLOAD_PRESET = 'rony_hair_uploads' // À créer dans Cloudinary
+const CLOUDINARY_UPLOAD_PRESET = 'rony_hair_uploads'
 
-/**
- * Upload une image sur Cloudinary
- * @param {File} file - Le fichier image à uploader
- * @param {Function} onProgress - Callback pour suivre la progression (0-100)
- * @returns {Promise<{url: string, publicId: string}>}
- */
-export const uploadImageToCloudinary = async (file, onProgress = null) => {
+export const uploadImageToCloudinary = async (file, onProgress = null, folder = 'menuiserie/products') => {
   const formData = new FormData()
   formData.append('file', file)
   formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET)
   formData.append('folder', 'menuiserie/products')
 
   try {
-    // Créer une instance axios sans credentials pour Cloudinary
     const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData, {
-      withCredentials: false, // ⚠️ IMPORTANT : Désactiver pour Cloudinary
+      withCredentials: false,
       onUploadProgress: (progressEvent) => {
         if (onProgress) {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total,
-          )
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
           onProgress(percentCompleted)
         }
       },
     })
-
-    return {
-      url: response.data.secure_url,
-      publicId: response.data.public_id,
-    }
+    return { url: response.data.secure_url, publicId: response.data.public_id }
   } catch (error) {
-    console.error('Erreur upload Cloudinary:', error)
     throw new Error("Erreur lors de l'upload de l'image")
   }
 }
 
-/**
- * Supprimer une image de Cloudinary (nécessite un backend endpoint)
- * Note: Cloudinary nécessite une signature pour la suppression
- * Il faut passer par le backend pour signer la requête
- */
 export const deleteImageFromCloudinary = async (publicId) => {
-  // TODO: Créer un endpoint backend pour supprimer de Cloudinary
-  console.log('Suppression Cloudinary à implémenter:', publicId)
+  try {
+    await axios.post(`${API.admin}/delete-cloudinary-image`, { publicId }, { headers: getAuthHeaders() })
+  } catch (error) {
+    console.error('Erreur suppression Cloudinary:', error)
+  }
 }
 
-// ============================================
-// EXPORT PAR DÉFAUT
-// ============================================
-
 export default {
-  getCategoryImages,
-  addImageToCategory,
-  updateImage,
-  deleteImage,
-  reorderImages,
-  uploadImageToCloudinary,
-  deleteImageFromCloudinary,
+  getCategoryImages, addImageToCategory, updateImage, deleteImage, reorderImages,
+  uploadImageToCloudinary, deleteImageFromCloudinary,
 }

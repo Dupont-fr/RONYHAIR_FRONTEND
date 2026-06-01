@@ -2,106 +2,31 @@ import React, { useState } from 'react'
 import { Link } from 'react-router'
 import './styles/Navbar.css'
 
+const NavIcon = ({ name, size = 18, color }) => {
+  const icons = {
+    home: <path d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' />,
+    services: <path d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />,
+    contact: <path d='M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' />,
+    conditions: <path d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' />,
+    privacy: <path d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' />,
+    faq: <path d='M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />,
+    promotions: <><path d='M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6m4-6a4 4 0 118 0' /><circle cx='12' cy='8' r='1.5' fill={color || 'currentColor'} stroke='none' /></>,
+  }
+
+  return (
+    <svg width={size} height={size} viewBox='0 0 24 24' fill='none' stroke={color || 'currentColor'} strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' className='nav-icon'>
+      {icons[name]}
+    </svg>
+  )
+}
+
 const Navbar = ({ categories }) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const [categoriesOpen, setCategoriesOpen] = useState(false)
 
   const toggleMenu = () => setMenuOpen(!menuOpen)
-  const closeMenu = () => {
-    setMenuOpen(false)
-    setCategoriesOpen(false)
-  }
+  const closeMenu = () => { setMenuOpen(false); setCategoriesOpen(false) }
   const toggleCategories = () => setCategoriesOpen(!categoriesOpen)
-
-  const FolderIcon = () => (
-    <svg
-      width='16'
-      height='16'
-      viewBox='0 0 24 24'
-      fill='#667eea'
-      style={{ verticalAlign: 'middle', marginRight: '8px' }}
-    >
-      <path d='M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z' />
-    </svg>
-  )
-
-  const EmailIcon = () => (
-    <svg
-      width='16'
-      height='16'
-      viewBox='0 0 24 24'
-      fill='#e53e3e'
-      style={{ verticalAlign: 'middle', marginRight: '8px' }}
-    >
-      <path d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z' />
-    </svg>
-  )
-
-  const DocumentIcon = () => (
-    <svg
-      width='16'
-      height='16'
-      viewBox='0 0 24 24'
-      fill='#dd6b20'
-      style={{ verticalAlign: 'middle', marginRight: '8px' }}
-    >
-      <path d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z' />
-    </svg>
-  )
-
-  const LockIcon = () => (
-    <svg
-      width='16'
-      height='16'
-      viewBox='0 0 24 24'
-      fill='#805ad5'
-      style={{ verticalAlign: 'middle', marginRight: '8px' }}
-    >
-      <path d='M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z' />
-    </svg>
-  )
-
-  const QuestionMarkIcon = () => (
-    <svg
-      width='16'
-      height='16'
-      viewBox='0 0 24 24'
-      fill='#4299e1'
-      style={{ verticalAlign: 'middle', marginRight: '8px' }}
-    >
-      <path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z' />
-    </svg>
-  )
-
-  const CloseIcon = () => (
-    <svg
-      width='20'
-      height='20'
-      viewBox='0 0 24 24'
-      fill='#4a5568'
-      style={{ display: 'block', margin: '0 auto' }}
-    >
-      <path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z' />
-    </svg>
-  )
-
-  const HomeIcon = () => (
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      width='20'
-      height='20'
-      viewBox='0 0 24 24'
-      fill='none'
-      stroke='currentColor'
-      strokeWidth='2'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      style={{ marginRight: '8px', verticalAlign: 'middle', color: '#2964ca' }}
-    >
-      <path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'></path>
-      <polyline points='9 22 9 12 15 12 15 22'></polyline>
-    </svg>
-  )
 
   return (
     <>
@@ -109,42 +34,23 @@ const Navbar = ({ categories }) => {
         <div className='navbar-container'>
           <Link to='/' className='navbar-logo' onClick={closeMenu}>
             <div className='logo-container'>
-              {/* ── LOGO : image originale depuis /public ── */}
               <img src='/logo.jpeg' alt='Rony Hair logo' className='logo-img' />
-              {/* ─────────────────────────────────────────── */}
-
-              <span className='logo-text'>
-                RONY HAIR 237 <br />
-                {/* INSTITUT DE BEAUTÉ MIXTE */}
-              </span>
+              <span className='logo-text'>RONY HAIR 237</span>
             </div>
           </Link>
 
           <div className='navbar-links'>
-            <Link to='/' className='nav-link'>
-              Accueil
-            </Link>
-            <Link to='/categories' className='nav-link'>
-              Nos Services
-            </Link>
-            <Link to='/contact' className='nav-link'>
-              Contact
-            </Link>
-            <Link to='/conditions' className='nav-link'>
-              Conditions d'utilisations
-            </Link>
-            <Link to='/confidentialite' className='nav-link'>
-              Politiques de confidentialités
-            </Link>
-            <Link to='/faq' className='nav-link'>
-              FAQ
-            </Link>
+            <Link to='/' className='nav-link'><NavIcon name='home' color='#d81a88' /><span>Accueil</span></Link>
+            <Link to='/categories' className='nav-link'><NavIcon name='services' color='#8b5a2b' /><span>Services</span></Link>
+            <Link to='/promotions' className='nav-link'><NavIcon name='promotions' color='#d81a88' /><span>Promotions</span></Link>
+            <Link to='/contact' className='nav-link'><NavIcon name='contact' color='#3b82f6' /><span>Contact</span></Link>
+            <Link to='/conditions' className='nav-link'><NavIcon name='conditions' color='#f59e0b' /><span>Conditions</span></Link>
+            <Link to='/confidentialite' className='nav-link'><NavIcon name='privacy' color='#10b981' /><span>Confidentialité</span></Link>
+            <Link to='/faq' className='nav-link'><NavIcon name='faq' color='#8b5cf6' /><span>FAQ</span></Link>
           </div>
 
           <button className='hamburger' onClick={toggleMenu}>
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
           </button>
         </div>
       </nav>
@@ -152,69 +58,30 @@ const Navbar = ({ categories }) => {
       <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
         <div className='mobile-menu-header'>
           <h2>Menu</h2>
-          <button className='close-btn' onClick={closeMenu}>
-            <CloseIcon />
-          </button>
+          <button className='close-btn' onClick={closeMenu}>✕</button>
         </div>
-
         <div className='mobile-menu-content'>
-
-          <Link to='/' className='menu-link' onClick={closeMenu}>
-            <span style={{ display: 'flex', alignItems: 'center' }}>
-              <HomeIcon />
-              Accueil
-            </span>
-          </Link>
+          <Link to='/' className='menu-link' onClick={closeMenu}><span><NavIcon name='home' color='#d81a88' />Accueil</span></Link>
           <div className='menu-item'>
             <button className='menu-link' onClick={toggleCategories}>
-              <span style={{ display: 'flex', alignItems: 'center' }}>
-                <FolderIcon />
-                Nos Services
-              </span>
+              <span><NavIcon name='services' color='#8b5a2b' />Nos Services</span>
               <span className='arrow'>{categoriesOpen ? '▼' : '▶'}</span>
             </button>
-
             {categoriesOpen && (
               <div className='submenu'>
                 {categories.map((category) => (
-                  <Link
-                    key={category.id}
-                    to={`/category/${category.slug}`}
-                    className='submenu-link'
-                    onClick={closeMenu}
-                  >
+                  <Link key={category.id} to={`/category/${category.slug}`} className='submenu-link' onClick={closeMenu}>
                     {category.nom}
                   </Link>
                 ))}
               </div>
             )}
           </div>
-
-          <Link to='/contact' className='menu-link' onClick={closeMenu}>
-            <span style={{ display: 'flex', alignItems: 'center' }}>
-              <EmailIcon />
-              Contact
-            </span>
-          </Link>
-          <Link to='/conditions' className='menu-link' onClick={closeMenu}>
-            <span style={{ display: 'flex', alignItems: 'center' }}>
-              <DocumentIcon />
-              Conditions d'utilisation
-            </span>
-          </Link>
-          <Link to='/confidentialite' className='menu-link' onClick={closeMenu}>
-            <span style={{ display: 'flex', alignItems: 'center' }}>
-              <LockIcon />
-              Politiques de confidentialités
-            </span>
-          </Link>
-          <Link to='/faq' className='menu-link' onClick={closeMenu}>
-            <span style={{ display: 'flex', alignItems: 'center' }}>
-              <QuestionMarkIcon />
-              FAQ
-            </span>
-          </Link>
-          
+          <Link to='/promotions' className='menu-link' onClick={closeMenu}><span><NavIcon name='promotions' color='#d81a88' />Promotions</span></Link>
+          <Link to='/contact' className='menu-link' onClick={closeMenu}><span><NavIcon name='contact' color='#3b82f6' />Contact</span></Link>
+          <Link to='/conditions' className='menu-link' onClick={closeMenu}><span><NavIcon name='conditions' color='#f59e0b' />Conditions</span></Link>
+          <Link to='/confidentialite' className='menu-link' onClick={closeMenu}><span><NavIcon name='privacy' color='#10b981' />Confidentialité</span></Link>
+          <Link to='/faq' className='menu-link' onClick={closeMenu}><span><NavIcon name='faq' color='#8b5cf6' />FAQ</span></Link>
         </div>
       </div>
 

@@ -8,15 +8,23 @@ const PromoBanner = ({ promotion, onExpire }) => {
   if (!promotion) return null
 
   const handleClick = () => {
-    navigate('/categories') // Utiliser navigate pour rediriger
+    navigate('/categories')
   }
+
+  const hasImage = promotion.image && promotion.image.trim() !== ''
+
   return (
-    <div className='promo-banner stock-limite'>
+    <div className={`promo-banner stock-limite ${hasImage ? 'has-image' : ''}`}
+      style={hasImage ? { backgroundImage: `url(${promotion.image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
+      {hasImage && <div className='promo-overlay' />}
       <div className='promo-content'>
         <span className='promo-text'>
-          <strong>Promo Spéciale!!</strong> | Chez RONY HAIR 237, profitez de
-          nos offres et repartez avec des cadeaux exclusifs ! |{' '}
-          {promotion.description}
+          <strong>{promotion.nom}</strong>
+          {promotion.description && (
+            <>
+              {' | '}{promotion.description}
+            </>
+          )}
         </span>
         <span className='promo-timer'>
           Expire dans: <br />

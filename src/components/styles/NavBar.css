@@ -3,15 +3,15 @@
   top: 0;
   left: 0;
   right: 0;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border-bottom: 2px solid #fce4ec;
   z-index: 100;
 }
 
 .navbar-container {
-  max-width: 140px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 12px 15px;
+  padding: 12px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,20 +26,49 @@
 
 .navbar-links {
   display: none;
-  gap: 25px;
+  gap: 6px;
+  align-items: center;
 }
 
 .nav-link {
-  /* color: #667eea; */
-  color: #d81a88;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #4a5568;
   text-decoration: none;
-  font-size: 40px;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 700;
+  white-space: nowrap;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  position: relative;
 }
 
 .nav-link:hover {
-  /* color: #764ba2; */
+  background: rgba(216, 26, 136, 0.06);
   color: #d81a88;
+}
+
+.nav-link span {
+  position: relative;
+}
+
+.nav-link span::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #d81a88;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover span::after {
+  width: 100%;
 }
 
 .hamburger {
@@ -57,6 +86,10 @@
   height: 3px;
   background: #232324;
   border-radius: 2px;
+}
+
+.nav-icon {
+  flex-shrink: 0;
 }
 
 .mobile-menu {
@@ -118,13 +151,20 @@
   padding: 16px 18px;
   color: #2d3748;
   text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 600;
   background: none;
   border: none;
   width: 100%;
   text-align: left;
   cursor: pointer;
+  gap: 0;
+}
+
+.menu-link > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .menu-link:hover {
@@ -147,7 +187,7 @@
   padding: 10px 18px 10px 36px;
   color: #4a5568;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 17px;
 }
 
 .submenu-link:hover {
@@ -175,7 +215,7 @@
 
 @media (min-width: 768px) {
   .navbar-container {
-    padding: 15px 20px;
+    padding: 14px 32px;
   }
   .navbar-logo {
     font-size: 24px;
@@ -188,25 +228,24 @@
   }
 }
 
-/* ── Logo container ── */
 .logo-container {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* ── CHANGEMENT : logo-svg → logo-img ── */
 .logo-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%; /* cercle propre, coupe les bandes noires */
-  object-fit: cover; /* recadre sur la partie centrale du logo */
-  object-position: center; /* centre l'image dans le cercle */
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
   flex-shrink: 0;
 }
 
 .logo-text {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #d81a88; /* couleur rose du logo Rony Hair */
+  font-weight: 900;
+  font-size: 1.6rem;
+  color: #d81a88;
+  letter-spacing: 0.5px;
 }

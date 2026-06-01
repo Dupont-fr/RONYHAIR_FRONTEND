@@ -3,6 +3,8 @@ import { Link } from 'react-router'
 import * as promotionService from '../services/promotionService'
 import * as categoryService from '../services/categoryService'
 import AdminLayout from './AdminLayout'
+import ConfirmModal from './ConfirmModal'
+import { uploadImageToCloudinary } from '../services/imageService'
 import './styles/ManagePromotions.css'
 
 const ManagePromotions = () => {
@@ -14,10 +16,14 @@ const ManagePromotions = () => {
   const [showModal, setShowModal] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [currentPromo, setCurrentPromo] = useState(null)
+  const [confirmDelete, setConfirmDelete] = useState(null)
+  const [imageUploading, setImageUploading] = useState(false)
 
   const [formData, setFormData] = useState({
     type: 'stock-limite',
     nom: '',
+    description: '',
+    image: '',
     dateDebut: '',
     dateFin: '',
     categorie: '',
@@ -33,9 +39,10 @@ const ManagePromotions = () => {
     if (success) setTimeout(() => setSuccess(null), 3000)
   }, [success])
 
-  const loadData = async () => {
+  const loadData = async (showLoading = true) => {
+    const start = showLoading ? Date.now() : 0
+    if (showLoading) setLoading(true)
     try {
-      setLoading(true)
       const [promosData, catsData] = await Promise.all([
         promotionService.getAllPromotions(),
         categoryService.getAllCategories(),
@@ -47,7 +54,10 @@ const ManagePromotions = () => {
       console.error('Erreur:', err)
       setError(err.message)
     } finally {
-      setLoading(false)
+      if (showLoading) {
+        const elapsed = Date.now() - start
+        setTimeout(() => setLoading(false), Math.max(0, 300 - elapsed))
+      }
     }
   }
 
@@ -58,6 +68,8 @@ const ManagePromotions = () => {
       setFormData({
         type: promo.type,
         nom: promo.nom,
+        description: promo.description || '',
+        image: promo.image || '',
         dateDebut: new Date(promo.dateDebut).toISOString().slice(0, 16),
         dateFin: new Date(promo.dateFin).toISOString().slice(0, 16),
         categorie: promo.categorie?._id || '',
@@ -70,6 +82,8 @@ const ManagePromotions = () => {
       setFormData({
         type: 'stock-limite',
         nom: '',
+        description: '',
+        image: '',
         dateDebut: '',
         dateFin: '',
         categorie: '',
@@ -106,6 +120,26 @@ const ManagePromotions = () => {
     setFormData({ ...formData, gains: newGains })
   }
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    if (file.size > 5 * 1024 * 1024) {
+      alert("L'image ne doit pas dépasser 5 Mo.")
+      e.target.value = ''
+      return
+    }
+    setImageUploading(true)
+    try {
+      const { url } = await uploadImageToCloudinary(file, null, 'promotions')
+      setFormData((prev) => ({ ...prev, image: url }))
+    } catch {
+      alert("Erreur lors du téléchargement de l'image")
+    } finally {
+      setImageUploading(false)
+      e.target.value = ''
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
@@ -130,7 +164,7 @@ const ManagePromotions = () => {
       }
 
       handleCloseModal()
-      loadData()
+      loadData(false)
     } catch (err) {
       console.error('Erreur:', err)
       setError(err.message)
@@ -138,12 +172,10 @@ const ManagePromotions = () => {
   }
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Supprimer cette promotion ?')) return
-
     try {
       await promotionService.deletePromotion(id)
       setSuccess('Promotion supprimée')
-      loadData()
+      loadData(false)
     } catch (err) {
       setError(err.message)
     }
@@ -153,7 +185,7 @@ const ManagePromotions = () => {
     try {
       await promotionService.togglePromotion(id)
       setSuccess('Statut modifié')
-      loadData()
+      loadData(false)
     } catch (err) {
       setError(err.message)
     }
@@ -360,6 +392,7 @@ const ManagePromotions = () => {
   }
 
   return (
+    <React.Fragment>
     <AdminLayout>
       <div className='manage-promotions'>
         <div className='page-header'>
@@ -497,7 +530,7 @@ const ManagePromotions = () => {
                   </button>
                   <button
                     className='btn-action btn-delete'
-                    onClick={() => handleDelete(promo._id)}
+                    onClick={() => setConfirmDelete(promo._id)}
                   >
                     <TrashIcon />
                   </button>
@@ -538,14 +571,8 @@ const ManagePromotions = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value='stock-limite'>
-                      <BoxIcon />
-                      Service en promotion
-                    </option>
-                    <option value='tombola'>
-                      <DiceIcon />
-                      Tombola
-                    </option>
+                    <option value='stock-limite'>Service en promotion</option>
+                    <option value='tombola'>Tombola</option>
                   </select>
                 </div>
 
@@ -558,6 +585,37 @@ const ManagePromotions = () => {
                     onChange={handleChange}
                     required
                   />
+                </div>
+
+                <div className='form-group'>
+                  <label>Description</label>
+                  <textarea
+                    name='description'
+                    value={formData.description}
+                    onChange={handleChange}
+                    rows='3'
+                    placeholder='Décrivez votre promotion...'
+                  />
+                </div>
+
+                <div className='form-group'>
+                  <label>Image</label>
+                  <div className='promo-image-upload-row'>
+                    <input
+                      type='text'
+                      name='image'
+                      value={formData.image}
+                      onChange={handleChange}
+                      placeholder="URL de l'image"
+                    />
+                    <label className='promo-image-upload-btn'>
+                      {imageUploading ? '...' : 'Upload'}
+                      <input type='file' accept='image/*' onChange={handleImageUpload} hidden />
+                    </label>
+                  </div>
+                  {formData.image && (
+                    <img src={formData.image} alt='Aperçu' className='promo-image-preview' />
+                  )}
                 </div>
 
                 <div className='form-row'>
@@ -669,6 +727,14 @@ const ManagePromotions = () => {
         )}
       </div>
     </AdminLayout>
+    <ConfirmModal
+      isOpen={!!confirmDelete}
+      message='Supprimer cette promotion ?'
+      confirmText='Supprimer'
+      onConfirm={() => { handleDelete(confirmDelete); setConfirmDelete(null) }}
+      onCancel={() => setConfirmDelete(null)}
+    />
+  </React.Fragment>
   )
 }
 
