@@ -61,7 +61,7 @@ const PublicCategoriesList = () => {
             <div className='empty-state'>
               <h3>Aucune prestation disponible</h3>
               <p>Nos services seront bientôt disponibles...</p>
-              <Link to='/' className='btn-home'>Retour à l'accueil</Link>
+              <Link to='/accueil' className='btn-home'>Retour à l'accueil</Link>
             </div>
           ) : (
             <div className='categories-grid'>

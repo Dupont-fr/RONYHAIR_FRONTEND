@@ -217,7 +217,7 @@ const Footer = () => {
                   <a href='mailto:dupontdjeague@gmail.com'>Dupont-Company</a>
                 </p>
                 <hr></hr>
-                <Link to='/' className='home-link' onClick={handleLinkClick}>
+                <Link to='/accueil' className='home-link' onClick={handleLinkClick}>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     width='20'

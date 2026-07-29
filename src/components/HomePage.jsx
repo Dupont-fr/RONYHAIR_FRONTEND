@@ -10,31 +10,13 @@ import Footer from './footer/Footer'
 import './styles/HomePage.css'
 import WhatsAppButton from './WhatsAppButton'
 
-const CACHE_KEY = 'homepage_data'
-const CACHE_TTL = 5 * 60 * 1000
-
-const getCache = () => {
-  try {
-    const raw = sessionStorage.getItem(CACHE_KEY)
-    if (!raw) return null
-    const { data, timestamp } = JSON.parse(raw)
-    if (Date.now() - timestamp > CACHE_TTL) { sessionStorage.removeItem(CACHE_KEY); return null }
-    return data
-  } catch { return null }
-}
-
-const setCache = (data) => {
-  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() })) } catch { }
-}
-
 const HomePage = () => {
   const navigate = useNavigate()
-  const cached = getCache()
-  const [categories, setCategories] = useState(cached?.categories || [])
-  const [tombolaPromotions, setTombolaPromotions] = useState(cached?.promotions || [])
+  const [categories, setCategories] = useState([])
+  const [tombolaPromotions, setTombolaPromotions] = useState([])
   const [currentTombolaIndex, setCurrentTombolaIndex] = useState(0)
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0)
-  const [loading, setLoading] = useState(!cached)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const loadedRef = useRef(false)
@@ -48,8 +30,7 @@ const HomePage = () => {
   }, [])
 
   useEffect(() => {
-    if (!cached) loadData()
-    else loadedRef.current = true
+    if (!loadedRef.current) loadData()
   }, [])
 
   useEffect(() => {
@@ -68,7 +49,6 @@ const HomePage = () => {
         promotionService.getTombolaPromotions(),
       ])
       const data = { categories: categoriesData.categories || [], promotions: tombolaData.promotions || [] }
-      setCache(data)
       setCategories(data.categories)
       setTombolaPromotions(data.promotions)
       setError(null)
@@ -92,7 +72,7 @@ const HomePage = () => {
         </div>
       </header>
 
-      {error && !cached ? (
+      {error ? (
         <div className='error-container'>
           <p>{error}</p>
           <button onClick={loadData}>Vérifier votre connexion internet et Réessayer</button>

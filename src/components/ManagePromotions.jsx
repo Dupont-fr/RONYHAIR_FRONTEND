@@ -147,6 +147,8 @@ const ManagePromotions = () => {
     try {
       const data = {
         ...formData,
+        dateDebut: new Date(formData.dateDebut).toISOString(),
+        dateFin: new Date(formData.dateFin).toISOString(),
         gains:
           formData.type === 'tombola'
             ? formData.gains.filter((g) => g.trim())
@@ -474,7 +476,7 @@ const ManagePromotions = () => {
                       {promo.type === 'stock-limite' ? (
                         <>
                           <BoxIcon />
-                          Service en promotion
+                          Offre Spéciale
                         </>
                       ) : (
                         <>
@@ -571,7 +573,7 @@ const ManagePromotions = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value='stock-limite'>Service en promotion</option>
+                    <option value='stock-limite'>Offre Spéciale</option>
                     <option value='tombola'>Tombola</option>
                   </select>
                 </div>

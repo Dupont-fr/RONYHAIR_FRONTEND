@@ -628,7 +628,7 @@ const ManageImages = () => {
 
         <div className='action-footer'>
           <Link
-            to='/'
+            to='/accueil'
             target='_blank'
             className='btn-secondary'
             style={{ display: 'flex', alignItems: 'center' }}

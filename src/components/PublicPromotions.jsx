@@ -65,7 +65,7 @@ const PublicPromotions = () => {
               </svg>
               <h3>Aucune promotion en cours</h3>
               <p>Revenez bientôt pour découvrir nos offres spéciales !</p>
-              <Link to='/' className='btn-home'>Retour à l'accueil</Link>
+              <Link to='/accueil' className='btn-home'>Retour à l'accueil</Link>
             </div>
           ) : (
             <div className='promotions-grid'>
@@ -75,7 +75,7 @@ const PublicPromotions = () => {
                   {promo.image && <div className='promo-card-overlay' />}
                   <div className='promo-card-content'>
                     <span className={`promo-badge ${promo.type}`}>
-                      {promo.type === 'stock-limite' ? 'Stock Limité' : 'Tombola'}
+                      {promo.type === 'stock-limite' ? 'Offre Spéciale' : 'Tombola'}
                     </span>
                     <h3 className='promo-card-title'>{promo.nom}</h3>
                     {promo.description && <p className='promo-card-desc'>{promo.description}</p>}

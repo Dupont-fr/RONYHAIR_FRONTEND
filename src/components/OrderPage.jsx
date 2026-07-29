@@ -20,7 +20,7 @@ const OrderPage = () => {
       <div className='order-page-wrapper'>
         <header className='order-page-header'>
           <div className='order-page-header-content'>
-            <Link to='/' className='brand-link'>
+            <Link to='/accueil' className='brand-link'>
               <h1 className='brand-name'>RONY HAIR 237</h1>
               <p className='brand-subtitle'>INSTITUT DE BEAUTÉ MIXTE</p>
             </Link>
@@ -31,7 +31,7 @@ const OrderPage = () => {
             <div className='error-icon'>⚠️</div>
             <h2>Service introuvable</h2>
             <p>Veuillez sélectionner une prestation depuis la page d'accueil.</p>
-            <Link to='/' className='btn-back-home'>← Retour à l'accueil</Link>
+            <Link to='/accueil' className='btn-back-home'>← Retour à l'accueil</Link>
           </div>
         </div>
         <footer className='order-page-footer'>
@@ -74,11 +74,11 @@ Ville: ${formData.ville}
     <div className='order-page-wrapper'>
       <header className='order-page-header'>
         <div className='order-page-header-content'>
-          <Link to='/' className='brand-link'>
+          <Link to='/accueil' className='brand-link'>
             <h1 className='brand-name'>RONY HAIR 237</h1>
             <p className='brand-subtitle'>Institut de Beauté & Bien-être</p>
           </Link>
-          <Link to='/' className='btn-back-home-header'>← Accueil</Link>
+          <Link to='/accueil' className='btn-back-home-header'>← Accueil</Link>
         </div>
       </header>
 

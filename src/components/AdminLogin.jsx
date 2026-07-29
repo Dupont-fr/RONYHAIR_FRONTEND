@@ -73,7 +73,7 @@ const AdminLogin = () => {
         </form>
 
         <div className='login-footer'>
-          <p><Link to='/'>← Retour au site</Link></p>
+          <p><Link to='/accueil'>← Retour au site</Link></p>
         </div>
       </div>
     </div>

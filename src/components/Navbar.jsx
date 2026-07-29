@@ -32,7 +32,7 @@ const Navbar = ({ categories }) => {
     <>
       <nav className='navbar'>
         <div className='navbar-container'>
-          <Link to='/' className='navbar-logo' onClick={closeMenu}>
+          <Link to='/accueil' className='navbar-logo' onClick={closeMenu}>
             <div className='logo-container'>
               <img src='/logo.jpeg' alt='Rony Hair logo' className='logo-img' />
               <span className='logo-text'>RONY HAIR 237</span>
@@ -40,7 +40,7 @@ const Navbar = ({ categories }) => {
           </Link>
 
           <div className='navbar-links'>
-            <Link to='/' className='nav-link'><NavIcon name='home' color='#d81a88' /><span>Accueil</span></Link>
+            <Link to='/accueil' className='nav-link'><NavIcon name='home' color='#d81a88' /><span>Accueil</span></Link>
             <Link to='/categories' className='nav-link'><NavIcon name='services' color='#8b5a2b' /><span>Services</span></Link>
             <Link to='/promotions' className='nav-link'><NavIcon name='promotions' color='#d81a88' /><span>Promotions</span></Link>
             <Link to='/contact' className='nav-link'><NavIcon name='contact' color='#3b82f6' /><span>Contact</span></Link>
@@ -61,7 +61,7 @@ const Navbar = ({ categories }) => {
           <button className='close-btn' onClick={closeMenu}>✕</button>
         </div>
         <div className='mobile-menu-content'>
-          <Link to='/' className='menu-link' onClick={closeMenu}><span><NavIcon name='home' color='#d81a88' />Accueil</span></Link>
+          <Link to='/accueil' className='menu-link' onClick={closeMenu}><span><NavIcon name='home' color='#d81a88' />Accueil</span></Link>
           <div className='menu-item'>
             <button className='menu-link' onClick={toggleCategories}>
               <span><NavIcon name='services' color='#8b5a2b' />Nos Services</span>

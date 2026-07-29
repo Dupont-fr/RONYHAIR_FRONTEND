@@ -66,7 +66,7 @@ const CategoryProducts = () => {
       <div className='category-products-page'>
         <div className='category-header'>
           <div className='breadcrumb'>
-            <Link to='/'>Accueil</Link><span>›</span>
+            <Link to='/accueil'>Accueil</Link><span>›</span>
             <Link to='/categories'>Services</Link><span>›</span>
             <span>{category.nom}</span>
           </div>

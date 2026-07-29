@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import * as authService from './services/authService'
 import LoadingPage from './components/LoadingPage'
 
+const LandingPage = React.lazy(() => import('./components/LandingPage'))
 const HomePage = React.lazy(() => import('./components/HomePage'))
 const OrderPage = React.lazy(() => import('./components/OrderPage'))
 const AdminLogin = React.lazy(() => import('./components/AdminLogin'))
@@ -96,7 +97,8 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={<PageLoader />}>
         <Routes>
-          <Route path='/' element={<HomePage />} />
+          <Route path='/' element={<LandingPage />} />
+          <Route path='/accueil' element={<HomePage />} />
           <Route path='/order' element={<OrderPage />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/conditions' element={<Conditions />} />

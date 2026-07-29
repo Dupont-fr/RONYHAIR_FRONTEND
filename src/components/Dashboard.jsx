@@ -417,7 +417,7 @@ const Dashboard = () => {
                     <h4>Avis Clients</h4>
                     <p>Modérer les témoignages</p>
                   </Link>
-                  <Link to='/' target='_blank' className='action-card'>
+                  <Link to='/accueil' target='_blank' className='action-card'>
                     <h4>Voir le Site</h4>
                     <p>Aperçu public</p>
                   </Link>

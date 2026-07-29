@@ -1,19 +1,16 @@
-const isProd = process.env.NODE_ENV === 'production'
-const PROD_URL = 'https://rony-hair-237.onrender.com'
-
 export const API = {
-  admin: `${isProd ? PROD_URL : ''}/api/admin`,
-  adminCategories: `${isProd ? PROD_URL : ''}/api/admin/categories`,
-  adminPromotions: `${isProd ? PROD_URL : ''}/api/admin/promotions`,
-  adminAnalytics: `${isProd ? PROD_URL : ''}/api/admin/analytics`,
-  adminOrders: `${isProd ? PROD_URL : ''}/api/admin/orders`,
-  adminProducts: `${isProd ? PROD_URL : ''}/api/admin/products`,
-  categories: `${isProd ? PROD_URL : ''}/api/categories`,
-  promotions: `${isProd ? PROD_URL : ''}/api/promotions`,
-  reviews: `${isProd ? PROD_URL : ''}/api/reviews`,
-  orders: `${isProd ? PROD_URL : ''}/api/orders`,
-  contact: `${isProd ? PROD_URL : ''}/api/contact`,
-  upload: `${isProd ? PROD_URL : ''}/api/upload`,
+  admin: '/api/admin',
+  adminCategories: '/api/admin/categories',
+  adminPromotions: '/api/admin/promotions',
+  adminAnalytics: '/api/admin/analytics',
+  adminOrders: '/api/admin/orders',
+  adminProducts: '/api/admin/products',
+  categories: '/api/categories',
+  promotions: '/api/promotions',
+  reviews: '/api/reviews',
+  orders: '/api/orders',
+  contact: '/api/contact',
+  upload: '/api/upload',
 }
 
 export const WHATSAPP_NUMBERS = {
