@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import * as publicService from '../services/publicService'
 import Navbar from './Navbar'
 import Footer from './footer/Footer'
-import './styles/PublicCategoriesList.css'
+import './styles/Publiccategorieslist.css'
 
 const PublicCategoriesList = () => {
   const [categories, setCategories] = useState([])
