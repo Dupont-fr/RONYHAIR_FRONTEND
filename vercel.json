@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://rony-hair-237.onrender.com/api/:path*"
+      "destination": "https://ronyhair.de5.net/api/:path*"
     }
   ]
 }
