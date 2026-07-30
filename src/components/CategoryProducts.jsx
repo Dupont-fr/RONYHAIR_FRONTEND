@@ -4,7 +4,7 @@ import * as publicService from '../services/publicService'
 import { getOptimizedImageUrl } from '../services/apiConfig'
 import Navbar from '../components/Navbar'
 import Footer from './footer/Footer'
-import ProductModal from '../components/ProductModal'
+// import ProductModal from '../components/ProductModal'
 import './styles/CategoryProducts.css'
 
 const CategoryProducts = () => {
@@ -108,9 +108,9 @@ const CategoryProducts = () => {
         </div>
       </div>
 
-      {selectedProduct && (
+      {/* {selectedProduct && (
         <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-      )}
+      )} */}
 
       <Footer />
     </>

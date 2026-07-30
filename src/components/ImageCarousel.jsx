@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import ProductModal from './ProductModal'
+// import ProductModal from './ProductModal'
 import PromoBanner from './promos/PromoBanner'
 import TombolaRotator from './promos/TombolaRotator'
 import { getOptimizedImageUrl } from '../services/apiConfig'
@@ -185,9 +185,9 @@ const ImageCarousel = ({
         </div>
       </div>
 
-      {selectedProduct && (
+      {/* {selectedProduct && (
         <ProductModal product={selectedProduct} onClose={handleCloseModal} />
-      )}
+      )} */}
     </>
   )
 }
