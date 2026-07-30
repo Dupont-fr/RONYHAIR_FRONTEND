@@ -46,7 +46,7 @@
   opacity: 0;
   transform: translateY(40px);
   transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 .landing-title.visible {
@@ -75,11 +75,22 @@
   opacity: 0.9;
 }
 
+.landing-tagline {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: clamp(14px, 2vw, 18px);
+  color: rgba(255, 255, 255, 0.7);
+  margin: 16px auto 0;
+  max-width: 500px;
+  line-height: 1.6;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
 .landing-divider {
   width: 80px;
   height: 2px;
   background: linear-gradient(90deg, transparent, #C9A96E, transparent);
-  margin: 30px auto;
+  margin: 24px auto;
   border: none;
   opacity: 0;
   transition: opacity 1s ease 0.6s;
@@ -89,12 +100,28 @@
   opacity: 1;
 }
 
+.services-heading {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: clamp(13px, 1.8vw, 16px);
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin: 0 0 20px;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.8s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
 .services-showcase {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   perspective: 1200px;
 }
 
@@ -172,6 +199,17 @@
   margin-top: 6px;
   display: block;
   letter-spacing: 0.5px;
+}
+
+.landing-footer-text {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: clamp(12px, 1.5vw, 14px);
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0 0 16px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.5s forwards;
 }
 
 .landing-cta {
@@ -287,13 +325,23 @@
   100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
+@keyframes driftRight {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(12px); }
+}
+
+@keyframes driftLeft {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-12px); }
+}
+
 @media (max-width: 768px) {
   .landing-content {
     padding: 16px 12px;
   }
 
   .landing-title {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .landing-title h1 {
@@ -307,9 +355,22 @@
     letter-spacing: 5px;
   }
 
+  .landing-tagline {
+    font-size: clamp(11px, 2.2vw, 14px);
+    margin: 10px auto 0;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+
   .landing-divider {
-    margin: 12px auto;
+    margin: 10px auto;
     width: 60px;
+  }
+
+  .services-heading {
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin: 0 0 12px;
   }
 
   .services-showcase {
@@ -317,7 +378,7 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto auto;
     gap: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     perspective: none;
   }
 
@@ -334,29 +395,28 @@
   .service-card.visible {
     opacity: 1;
     transform: scale(1);
-    transition: none;
-  }
-
-  .service-card.row-1 {
-    animation: none;
-  }
-
-  .service-card.row-2 {
-    animation: none;
   }
 
   .service-card.row-1.visible {
-    animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: var(--card-delay);
+    animation-name: slideInLeft, driftRight;
+    animation-duration: 0.5s, 4s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1), ease-in-out;
+    animation-delay: var(--card-delay), calc(var(--card-delay) + 0.7s);
+    animation-fill-mode: forwards, none;
+    animation-iteration-count: 1, infinite;
   }
 
   .service-card.row-2.visible {
-    animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: var(--card-delay);
+    animation-name: slideInRight, driftLeft;
+    animation-duration: 0.5s, 4s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1), ease-in-out;
+    animation-delay: var(--card-delay), calc(var(--card-delay) + 0.7s);
+    animation-fill-mode: forwards, none;
+    animation-iteration-count: 1, infinite;
   }
 
   .service-card:hover {
-    transform: translateY(-3px) scale(1.03);
+    transform: translateY(-3px) scale(1.02);
   }
 
   .service-icon {
@@ -375,6 +435,12 @@
 
   .service-desc {
     display: none;
+  }
+
+  .landing-footer-text {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    margin: 0 0 10px;
   }
 
   .btn-enter-app {
@@ -403,14 +469,26 @@
     letter-spacing: 3px;
   }
 
+  .landing-tagline {
+    font-size: 10px;
+    max-width: 260px;
+    margin-top: 8px;
+  }
+
   .landing-divider {
-    margin: 10px auto;
+    margin: 8px auto;
     width: 40px;
+  }
+
+  .services-heading {
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
   }
 
   .services-showcase {
     gap: 5px;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
   }
 
   .service-card {
@@ -425,6 +503,11 @@
 
   .service-name {
     font-size: 9px;
+  }
+
+  .landing-footer-text {
+    font-size: 9px;
+    margin-bottom: 8px;
   }
 
   .btn-enter-app {

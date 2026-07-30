@@ -123,15 +123,20 @@ const LandingPage = () => {
           <div className={`landing-title ${visible ? 'visible' : ''}`}>
             <h1>RONY HAIR 237</h1>
             <p className='subtitle'>Institut de Beauté & Bien-être</p>
+            <p className='landing-tagline'>
+              Votre salon de beauté vous ouvre ses portes pour une expérience unique
+            </p>
           </div>
 
           <hr className={`landing-divider ${visible ? 'visible' : ''}`} />
+
+          <p className='services-heading'>Découvrez nos services</p>
 
           <div className='services-showcase'>
             {services.map((service, index) => (
               <div
                 key={index}
-                className={`service-card row-${service.row} card-index-${index} ${visible ? 'visible' : ''}`}
+                className={`service-card row-${service.row} ${visible ? 'visible' : ''}`}
                 style={{ '--card-delay': `${0.5 + index * 0.12}s` }}
               >
                 <span className='service-icon'>{service.icon}</span>
@@ -140,6 +145,10 @@ const LandingPage = () => {
               </div>
             ))}
           </div>
+
+          <p className='landing-footer-text'>
+            Prenez rendez-vous et laissez-nous prendre soin de vous
+          </p>
 
           <div className={`landing-cta ${visible ? 'visible' : ''}`}>
             <button
